@@ -7,43 +7,68 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>
   :root {
-    --bg: #0d1117; --text: #c9d1d9; --dim: #8b949e;
-    --faint: #6e7681; --green: #3fb950; --soil: #d29922; --blue: #58a6ff;
-    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --bg:     #0e0f10;
+    --rule:   #26282b;
+    --text:   #e9e8e5;
+    --body:   #b0b0ac;
+    --dim:    #85857f;
+    --faint:  #5f5f5a;
+    --amber:  #d29922;
+    --green:  #3fb950;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text",
+            "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", "Cascadia Mono", Menlo,
+            Consolas, "Liberation Mono", monospace;
   }
+  * { box-sizing: border-box; }
   body {
-    margin: 0; min-height: 100vh;
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--body);
+    font-family: var(--sans); font-size: 16px; line-height: 1.6;
     display: flex; align-items: center; justify-content: center;
-    background: var(--bg); color: var(--text);
-    font-family: var(--mono); font-size: 15px; line-height: 1.7;
-    background-image: repeating-linear-gradient(
-      to bottom, rgba(255,255,255,.012) 0 1px, transparent 1px 3px);
+    -webkit-font-smoothing: antialiased;
   }
-  main { padding: 32px; max-width: 46ch; }
-  .prompt { color: var(--faint); margin-bottom: 18px; font-size: 13.5px; }
-  .prompt b { color: var(--green); font-weight: 600; }
-  .prompt i { color: var(--soil); font-style: normal; }
-  h1 { font-size: 20px; margin: 0 0 10px; color: #e6edf3; }
-  p { color: var(--dim); font-size: 14px; margin: 0 0 22px; }
-  a { color: var(--blue); }
-  .cursor {
-    display: inline-block; width: .55em; height: 1em;
-    background: var(--green); vertical-align: -.13em; margin-left: .15em;
-    animation: blink 1.05s step-end infinite;
+  main { padding: 32px 28px; max-width: 460px; width: 100%; }
+  .lab {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .11em;
+    text-transform: uppercase; color: var(--dim);
   }
-  @keyframes blink { 0%,50% { opacity: 1 } 51%,100% { opacity: 0 } }
-  @media (prefers-reduced-motion: reduce) { .cursor { animation: none } }
+  .lab.amber { color: var(--amber); }
+  h1 {
+    font-size: 26px; letter-spacing: -.024em; font-weight: 650;
+    color: var(--text); margin: 12px 0 14px; line-height: 1.15;
+  }
+  p { margin: 0 0 26px; font-size: 15.5px; color: var(--dim); max-width: 44ch; }
+  .rule { height: 1px; background: var(--rule); margin: 0 0 20px; }
+  a { color: var(--green); text-decoration: none; font-size: 15px; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* the packet made it to the host, then fell off the end of the path */
+  svg { display: block; margin: 0 0 22px; width: 100%; max-width: 300px; height: auto; }
 </style>
 </head>
 <body>
   <main>
-    <div class="prompt"><b>azam</b>@<i>santacruz</i>:~$ cat $REQUEST_URI</div>
-    <h1>404: no such file or directory<span class="cursor"></span></h1>
+    <span class="lab amber">Fig. 404</span>
+    <h1>No such file or directory.</h1>
+
+    <svg viewBox="0 0 300 54" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <line x1="14" y1="26" x2="196" y2="26" stroke="#26282b" stroke-width="1.5"/>
+      <line x1="196" y1="26" x2="286" y2="26" stroke="#26282b" stroke-width="1.5" stroke-dasharray="4 6"/>
+      <circle cx="14"  cy="26" r="5" fill="#5f5f5a"/>
+      <circle cx="74"  cy="26" r="5" fill="#5f5f5a"/>
+      <circle cx="134" cy="26" r="5" fill="#5f5f5a"/>
+      <circle cx="196" cy="26" r="5" fill="#d29922"/>
+      <path d="M204 44 L286 44" stroke="none"/>
+      <text x="196" y="50" text-anchor="middle" font-family="ui-monospace,Consolas,monospace"
+            font-size="8" fill="#d29922">LAST GOOD HOP</text>
+    </svg>
+
+    <div class="rule"></div>
     <p>
-      The packet made it to the host, but there is nothing at this address.
-      Somewhere upstream a link is stale.
+      The request reached the host, but nothing is served at this path.
+      Somewhere upstream a link has gone stale.
     </p>
-    <a href="/">&larr; back to the start</a>
+    <a href="/">&larr; Back to the start</a>
   </main>
 </body>
 </html>

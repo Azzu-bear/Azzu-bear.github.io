@@ -6,230 +6,289 @@
 <title>Azam Mohamed</title>
 <meta name="description" content="Azam Mohamed, computer engineer. Operating system internals, embedded firmware, and silicon. B.S. Computer Engineering, UC Santa Cruz.">
 <meta name="author" content="Azam Mohamed">
-<meta property="og:title" content="Azam Mohamed">
-<meta property="og:description" content="I build things close to the metal: operating system internals, embedded firmware, and silicon.">
+<link rel="canonical" href="https://azzu-bear.github.io/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://azzu-bear.github.io/">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Azam Mohamed">
+<meta property="og:description" content="I build things close to the metal: operating system internals, embedded firmware, and silicon.">
+<meta property="og:image" content="https://azzu-bear.github.io/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Azam Mohamed">
+<meta name="twitter:description" content="I build things close to the metal: operating system internals, embedded firmware, and silicon.">
+<meta name="twitter:image" content="https://azzu-bear.github.io/assets/og.jpg">
 <style>
   :root {
-    --bg:      #0d1117;
-    --panel:   #161b22;
-    --panel-2: #1c2129;
-    --line:    #30363d;
-    --line-2:  #21262d;
-    --text:    #c9d1d9;
-    --dim:     #8b949e;
-    --faint:   #6e7681;
-    --green:   #3fb950;
-    --soil:    #d29922;
-    --blue:    #58a6ff;
-    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-    --wrap: 940px;
+    /* neutral grey-black, not the blue-black every SaaS page uses */
+    --bg:     #0e0f10;
+    --raise:  #141517;
+    --rule:   #26282b;
+    --rule-2: #1c1e20;
+    --text:   #e9e8e5;
+    --body:   #b0b0ac;
+    --dim:    #85857f;
+    --faint:  #5f5f5a;
+    --amber:  #d29922;
+    --green:  #3fb950;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text",
+            "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", "Cascadia Mono", Menlo,
+            Consolas, "Liberation Mono", monospace;
   }
 
   * { box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 66px; }
 
   body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 15px;
-    line-height: 1.65;
+    margin: 0; background: var(--bg); color: var(--body);
+    font-family: var(--sans); font-size: 16px; line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    /* faint scanline wash, keeps the CRT read without hurting legibility */
-    background-image: repeating-linear-gradient(
-      to bottom, rgba(255,255,255,.012) 0 1px, transparent 1px 3px);
   }
 
-  a { color: var(--blue); text-decoration: none; }
-  a:hover { text-decoration: underline; }
+  a { color: var(--green); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 28px; }
 
-  /* ---------- nav ---------- */
+  /* mono label, the workhorse of the whole page */
+  .lab {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .11em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .lab.amber { color: var(--amber); }
 
+  /* ---------- nav: a running head, not a product bar ---------- */
   nav {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(13,17,23,.86);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line-2);
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(14,15,16,.93); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
   }
-  nav .wrap {
-    display: flex; align-items: center; gap: 22px;
-    height: 56px; flex-wrap: wrap;
+  nav .wrap { display: flex; align-items: center; height: 50px; gap: 20px; }
+  nav .who {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--text); white-space: nowrap;
   }
-  .brand { color: var(--faint); white-space: nowrap; font-size: 13.5px; }
-  .brand b { color: var(--green); font-weight: 600; }
-  .brand i { color: var(--soil); font-style: normal; }
-  nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; margin-left: auto; }
-  nav a {
-    color: var(--dim); font-size: 13.5px;
-    padding-bottom: 2px; border-bottom: 1px solid transparent;
+  nav ul { display: flex; gap: 20px; list-style: none; margin: 0 0 0 auto; padding: 0; }
+  nav ul a {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--dim);
   }
-  nav a:hover { color: var(--green); border-bottom-color: var(--green); text-decoration: none; }
+  nav ul a:hover { color: var(--amber); text-decoration: none; }
 
-  /* ---------- hero ---------- */
-
-  header { padding: 72px 0 8px; }
+  /* ---------- masthead ---------- */
+  header { padding: 64px 0 0; }
+  .masthead { display: grid; grid-template-columns: 1fr 268px; gap: 52px; align-items: start; }
 
   h1 {
-    font-size: clamp(30px, 6vw, 46px);
-    letter-spacing: -.5px;
-    margin: 0 0 6px;
-    font-weight: 700;
-    color: #e6edf3;
+    font-size: clamp(34px, 5.4vw, 52px); line-height: 1.04;
+    letter-spacing: -.032em; font-weight: 650; color: var(--text);
+    margin: 0 0 10px;
   }
-  .cursor {
-    display: inline-block; width: .58em; height: 1.02em;
-    background: var(--green); vertical-align: -.14em; margin-left: .12em;
-    animation: blink 1.05s step-end infinite;
+  .strapline { margin: 0 0 26px; }
+  .strapline span { color: var(--faint); padding: 0 8px; }
+
+  .lede {
+    font-size: clamp(18px, 2.1vw, 21px); line-height: 1.45;
+    color: var(--text); letter-spacing: -.012em; font-weight: 400;
+    margin: 0 0 16px; max-width: 34ch;
+    padding-left: 16px; border-left: 2px solid var(--amber);
   }
-  @keyframes blink { 0%,50% { opacity: 1 } 51%,100% { opacity: 0 } }
+  .sub { font-size: 15.5px; color: var(--dim); margin: 0; max-width: 50ch; }
 
-  .role { color: var(--soil); font-size: 15px; margin: 0 0 22px; }
-
-  .lede { max-width: 62ch; color: var(--text); margin: 0 0 12px; }
-  .sub  { max-width: 62ch; color: var(--dim); font-size: 14px; margin: 0; }
-
-  .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
-  .links a {
-    border: 1px solid var(--line); border-radius: 6px;
-    padding: 6px 13px; font-size: 13.5px; color: var(--dim);
-    background: var(--panel);
+  /* photo as a plate, no glow, square corners */
+  figure.plate { margin: 0; }
+  figure.plate img {
+    display: block; width: 100%; height: auto; border-radius: 2px;
+    border: 1px solid var(--rule); aspect-ratio: 4 / 5; object-fit: cover;
   }
-  .links a:hover {
-    color: var(--green); border-color: var(--green);
-    text-decoration: none; background: var(--panel-2);
+  figure.plate figcaption {
+    margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--rule-2);
+    display: flex; justify-content: space-between; gap: 10px;
   }
 
-  /* ---------- signal path terminal ---------- */
+  /* ---------- spec table, real parameters only ---------- */
+  .spec { margin-top: 52px; border-top: 1px solid var(--rule); }
+  .spec > div {
+    display: grid; grid-template-columns: 148px minmax(0,1fr);
+    gap: 22px; padding: 11px 0; border-bottom: 1px solid var(--rule-2);
+  }
+  .spec .val { font-size: 15px; color: var(--body); }
+  .spec .val b { color: var(--text); font-weight: 600; }
+  .spec .val .ok { color: var(--green); }
 
-  .term {
-    margin: 44px 0 0;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: var(--panel);
-    overflow: hidden;
+  /* ---------- figure ---------- */
+  figure.fig { margin: 34px 0 0; }
+  figure.fig .frame {
+    border: 1px solid var(--rule); border-radius: 2px;
+    background: var(--raise); padding: 26px 20px 20px; overflow: hidden;
   }
-  .term-bar {
-    display: flex; align-items: center; gap: 7px;
-    padding: 9px 13px;
-    background: var(--panel-2);
-    border-bottom: 1px solid var(--line);
-  }
-  .dot { width: 11px; height: 11px; border-radius: 50%; }
-  .term-title { margin-left: 8px; color: var(--faint); font-size: 12px; }
-  .term-body { padding: 20px 18px 22px; overflow-x: auto; }
-  .term-body svg { display: block; min-width: 620px; width: 100%; height: auto; }
+  figure.fig .scroll { overflow-x: auto; min-width: 0; }
+  figure.fig svg { display: block; min-width: 560px; width: 100%; height: auto; }
+  figure.fig figcaption { margin-top: 10px; display: flex; gap: 12px; align-items: baseline; }
+  figure.fig figcaption p { margin: 0; font-size: 13.5px; color: var(--dim); }
 
   /* ---------- sections ---------- */
-
-  section { padding: 60px 0 0; }
-
+  section { padding: 78px 0 0; }
+  .shead {
+    display: flex; align-items: baseline; gap: 16px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--rule);
+    margin-bottom: 6px;
+  }
   h2 {
-    font-size: 15px; font-weight: 600; margin: 0 0 4px;
-    color: var(--green); letter-spacing: .2px;
+    font-size: clamp(22px, 2.8vw, 27px); line-height: 1.15;
+    letter-spacing: -.022em; font-weight: 650; color: var(--text); margin: 0;
   }
-  h2::before { content: "$ "; color: var(--faint); font-weight: 400; }
-  .rule { height: 1px; background: var(--line-2); margin: 14px 0 26px; }
-
-  p { margin: 0 0 16px; max-width: 68ch; }
-
-  .note { color: var(--dim); font-size: 14px; }
-
-  /* ---------- work ---------- */
-
-  .job {
-    border-left: 2px solid var(--line);
-    padding: 2px 0 2px 20px;
-    margin: 0 0 30px;
-    transition: border-color .15s;
+  .shead .n {
+    font-family: var(--mono); font-size: 13px; color: var(--amber);
+    letter-spacing: .04em; flex: none;
   }
-  .job:hover { border-left-color: var(--green); }
-  .job h3 { font-size: 15px; font-weight: 600; margin: 0; color: #e6edf3; }
-  .job .where { color: var(--soil); font-size: 13.5px; font-weight: 400; }
-  .job .when {
-    color: var(--faint); font-size: 12.5px; margin: 2px 0 10px;
-    text-transform: uppercase; letter-spacing: .6px;
-  }
-  .job ul { margin: 0; padding-left: 18px; }
-  .job li { margin-bottom: 7px; color: var(--dim); font-size: 14px; max-width: 66ch; }
-  .job li::marker { color: var(--faint); }
+  .shead .rule { flex: 1; height: 1px; background: var(--rule-2); }
+  .shead .count { font-family: var(--mono); font-size: 11.5px; color: var(--faint); letter-spacing: .1em; }
 
-  /* ---------- projects ---------- */
+  p.body { font-size: 16.5px; line-height: 1.65; color: var(--body); margin: 20px 0 0; max-width: 70ch; }
+  p.body b { color: var(--text); font-weight: 600; }
 
-  .grid {
-    display: grid; gap: 14px;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  /* ---------- project index ---------- */
+  .index { margin-top: 4px; }
+  .row {
+    display: grid; grid-template-columns: 58px minmax(0,1fr) auto;
+    gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--rule-2);
+    align-items: start;
   }
-  .card {
-    border: 1px solid var(--line); border-radius: 8px;
-    background: var(--panel); padding: 18px 18px 16px;
-    display: flex; flex-direction: column;
-    transition: border-color .15s, transform .15s;
+  .row:hover { background: var(--raise); }
+  .row .id { font-family: var(--mono); font-size: 12.5px; color: var(--faint); padding-top: 3px; }
+  .row h3 { font-size: 18px; font-weight: 600; color: var(--text); margin: 0 0 4px; letter-spacing: -.014em; }
+  .row h3 a { color: var(--text); }
+  .row h3 a:hover { color: var(--green); text-decoration: none; }
+  .row .stack { display: block; margin-bottom: 9px; }
+  .row p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--dim); max-width: 72ch; }
+  .row .side { text-align: right; white-space: nowrap; padding-top: 3px; }
+  .row .side .note { display: block; color: var(--amber); }
+  .row .side .src { display: block; margin-top: 6px; font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; }
+
+  /* ---------- contact sheet: a strip of frames, scanned sideways ---------- */
+  .sheet {
+    display: flex; gap: 2px; overflow-x: auto; scroll-snap-type: x proximity;
+    margin: 22px -28px 0; padding: 0 28px 20px;
+    scrollbar-width: thin; scrollbar-color: var(--rule) transparent;
   }
-  .card:hover { border-color: var(--green); transform: translateY(-2px); }
-  .card h3 { margin: 0 0 3px; font-size: 14.5px; font-weight: 600; color: #e6edf3; }
-  .card h3 a { color: #e6edf3; }
-  .card h3 a:hover { color: var(--green); text-decoration: none; }
-  .card h3 a::after { content: " \2197"; color: var(--faint); font-size: 12px; }
-  .card .stack { color: var(--soil); font-size: 12px; margin-bottom: 10px; }
-  .card p { font-size: 13.5px; color: var(--dim); margin: 0; line-height: 1.6; max-width: none; }
-  .card .foot {
+  .sheet::-webkit-scrollbar { height: 7px; }
+  .sheet::-webkit-scrollbar-thumb { background: var(--rule); }
+  .sheet::-webkit-scrollbar-track { background: transparent; }
+
+  .frame-card {
+    flex: 0 0 290px; scroll-snap-align: start;
+    border: 1px solid var(--rule); background: var(--raise);
+    display: flex; flex-direction: column; text-decoration: none;
+    transition: border-color .18s, background .18s;
+  }
+  a.frame-card:hover { border-color: var(--amber); background: #17181a; }
+
+  .sprocket {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 10px; border-bottom: 1px solid var(--rule); background: var(--bg);
+  }
+  .field {
+    height: 150px; position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--rule);
+  }
+  .field > svg, .field > picture, .field img {
+    position: absolute; inset: 0; display: block;
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .field .tag {
+    position: absolute; left: 12px; bottom: 10px; z-index: 2;
+    font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; color: rgba(255,255,255,.95);
+    text-shadow: 0 1px 6px rgba(0,0,0,.85);
+  }
+  /* graph-paper ground, drawn under the figures only */
+  .field.fig-bg::before {
+    content: ""; position: absolute; inset: 0; z-index: 0;
+    background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+  .f1 { background: linear-gradient(140deg, #4a3a12, #16130a); }
+  .f2 { background: linear-gradient(140deg, #123246, #0a1620); }
+  .f3 { background: linear-gradient(140deg, #46301a, #1a120a); }
+  .f4 { background: linear-gradient(140deg, #14402c, #0a1a13); }
+  .f5 { background: linear-gradient(140deg, #2f2350, #140f24); }
+  .f6 { background: linear-gradient(140deg, #4a2020, #1d0d0d); }
+  .f7 { background: linear-gradient(140deg, #123f42, #08191b); }
+  .f8 { background: linear-gradient(140deg, #3a1f3f, #170d19); }
+
+  .frame-body { padding: 15px 16px 17px; display: flex; flex-direction: column; flex: 1; }
+  .frame-body h3 {
+    font-size: 16px; font-weight: 600; color: var(--text);
+    margin: 0 0 7px; letter-spacing: -.012em; line-height: 1.25;
+  }
+  .frame-body .stack { display: block; margin-bottom: 10px; }
+  .frame-body p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--dim); }
+  .frame-body .foot {
     margin-top: auto; padding-top: 14px;
-    color: var(--faint); font-size: 11.5px;
-    text-transform: uppercase; letter-spacing: .7px;
+    display: flex; justify-content: space-between; gap: 10px; align-items: baseline;
   }
+  a.frame-card .foot .src::after { content: " \2192"; color: var(--green); }
 
-  /* ---------- toolbox ---------- */
+  /* ---------- log / experience ---------- */
+  .entry {
+    display: grid; grid-template-columns: 168px minmax(0,1fr);
+    gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--rule-2);
+  }
+  .entry h3 { font-size: 17px; font-weight: 600; color: var(--text); margin: 0 0 3px; letter-spacing: -.012em; }
+  .entry .org { font-size: 14.5px; color: var(--amber); margin: 0 0 12px; }
+  .entry ul { margin: 0; padding-left: 17px; }
+  .entry li { font-size: 14.5px; color: var(--dim); line-height: 1.55; margin-bottom: 7px; max-width: 70ch; }
+  .entry li::marker { color: var(--faint); }
 
-  .tools { display: grid; gap: 12px; }
-  .tools > div {
-    display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px;
-    align-items: baseline;
+  /* ---------- stack ---------- */
+  .stackgrid { margin-top: 4px; }
+  .stackgrid > div {
+    display: grid; grid-template-columns: 132px minmax(0,1fr);
+    gap: 22px; padding: 13px 0; border-bottom: 1px solid var(--rule-2);
   }
-  .tools .k {
-    color: var(--green); font-size: 13px; letter-spacing: .4px;
+  .stackgrid .v {
+    font-family: var(--mono); font-size: 13px; color: var(--body);
+    line-height: 1.8; min-width: 0; overflow-wrap: anywhere;
   }
-  .tools .v {
-    color: var(--dim); font-size: 13.5px; line-height: 1.75;
-    min-width: 0; overflow-wrap: anywhere;
-  }
-  .tools .v i { color: var(--faint); font-style: normal; padding: 0 5px; }
+  .stackgrid .v i { color: var(--faint); font-style: normal; padding: 0 7px; }
 
   /* ---------- contact ---------- */
-
-  .contact-lines { margin-bottom: 26px; }
-  .contact-lines div { margin-bottom: 6px; font-size: 14px; }
-  .contact-lines .k { color: var(--faint); display: inline-block; min-width: 92px; }
-
-  /* ---------- footer ---------- */
+  .contact { margin-top: 4px; }
+  .contact > div {
+    display: grid; grid-template-columns: 132px minmax(0,1fr);
+    gap: 22px; padding: 12px 0; border-bottom: 1px solid var(--rule-2);
+  }
+  .contact .v { font-size: 15px; }
 
   footer {
-    margin-top: 80px; padding: 30px 0 48px;
-    border-top: 1px solid var(--line-2);
-  }
-  .art {
-    display: flex; gap: 34px; align-items: center; flex-wrap: wrap;
-    font-size: 12px; line-height: 1.45; margin-bottom: 24px;
-  }
-  .art pre { margin: 0; color: var(--soil); opacity: .7; }
-  .art q { color: var(--dim); font-style: italic; max-width: 30ch; }
-  .colophon { color: var(--faint); font-size: 12px; }
-
-  @media (max-width: 600px) {
-    header { padding-top: 48px; }
-    section { padding-top: 46px; }
-    nav .wrap { height: auto; padding-top: 10px; padding-bottom: 10px; }
-    nav ul { margin-left: 0; width: 100%; gap: 16px; }
-    .tools > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
-    .art { gap: 18px; }
+    margin-top: 64px; padding: 20px 0 44px; border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
   }
 
+  @media (max-width: 820px) {
+    .masthead { grid-template-columns: 1fr; gap: 34px; }
+    figure.plate { max-width: 236px; }
+    .row { grid-template-columns: 46px minmax(0,1fr); gap: 16px; }
+    .row .side { grid-column: 2; text-align: left; padding-top: 10px; }
+    .row .side .note { display: inline; }
+    .row .side .src { display: inline; margin-left: 14px; }
+    .entry { grid-template-columns: minmax(0,1fr); gap: 8px; }
+  }
+  @media (max-width: 560px) {
+    header { padding-top: 40px; }
+    section { padding-top: 56px; }
+    html { scroll-padding-top: 96px; }
+    nav .wrap { height: auto; flex-wrap: wrap; padding-top: 10px; padding-bottom: 8px; gap: 10px; }
+    nav ul { margin-left: 0; width: 100%; gap: 16px; overflow-x: auto; scrollbar-width: none; }
+    nav ul::-webkit-scrollbar { display: none; }
+    nav ul li { flex: none; }
+    .spec > div, .stackgrid > div, .contact > div { grid-template-columns: minmax(0,1fr); gap: 3px; }
+  }
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
     html { scroll-behavior: auto; }
@@ -240,13 +299,13 @@
 
 <nav>
   <div class="wrap">
-    <span class="brand"><b>azam</b>@<i>santacruz</i>:~$</span>
+    <span class="who">Azam Mohamed</span>
     <ul>
-      <li><a href="#about">about</a></li>
-      <li><a href="#work">work</a></li>
-      <li><a href="#projects">projects</a></li>
-      <li><a href="#toolbox">toolbox</a></li>
-      <li><a href="#contact">contact</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#log">Log</a></li>
+      <li><a href="#notes">Notes</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
 </nav>
@@ -254,320 +313,402 @@
 <div class="wrap">
 
   <header>
-    <h1>Azam Mohamed<span class="cursor"></span></h1>
-    <p class="role">computer engineer &nbsp;&middot;&nbsp; santa cruz, ca</p>
+    <div class="masthead">
+      <div>
+        <h1>Azam Mohamed</h1>
+        <p class="strapline lab">
+          Computer Engineer <span>/</span> Santa Cruz, CA <span>/</span> B.S. CE, UCSC 2023&ndash;2026
+        </p>
 
-    <p class="lede">
-      I build things close to the metal: operating system internals, embedded
-      firmware, and silicon.
-    </p>
-    <p class="sub">
-      B.S. Computer Engineering at UC Santa Cruz, finished in three years
-      (Sep 2023 to Aug 2026), with minors in Electrical Engineering and
-      Computer Science.
-    </p>
+        <p class="lede">
+          I build things close to the metal: operating system internals,
+          embedded firmware, and silicon.
+        </p>
+        <p class="sub">
+          Finished the degree in three years with minors in Electrical
+          Engineering and Computer Science. Currently at jLab, tracing bad soil
+          sensor readings across an entire pipeline.
+        </p>
+      </div>
 
-    <div class="links">
-      <a href="https://github.com/Azzu-bear">github</a>
-      <a href="https://www.linkedin.com/in/azam-mohamed-718780295/">linkedin</a>
-      <a href="mailto:azamoham@ucsc.edu">azamoham@ucsc.edu</a>
+      <figure class="plate">
+        <picture>
+          <source type="image/webp"
+                  srcset="assets/azam-portrait.webp 1x, assets/azam-portrait@2x.webp 2x">
+          <img src="assets/azam-portrait.jpg"
+               srcset="assets/azam-portrait.jpg 1x, assets/azam-portrait@2x.jpg 2x"
+               alt="Azam Mohamed on the Santa Cruz coast"
+               width="640" height="800" decoding="async">
+        </picture>
+        <figcaption>
+          <span class="lab">Santa Cruz, CA</span>
+          <span class="lab amber">West Cliff</span>
+        </figcaption>
+      </figure>
     </div>
 
-    <div class="term">
-      <div class="term-bar">
-        <span class="dot" style="background:#ff5f57"></span>
-        <span class="dot" style="background:#febc2e"></span>
-        <span class="dot" style="background:#28c840"></span>
-        <span class="term-title">ents &mdash; the path a soil reading takes</span>
+    <div class="spec">
+      <div>
+        <span class="lab">Degree</span>
+        <span class="val"><b>B.S. Computer Engineering</b>, UC Santa Cruz, Sep 2023 to Aug 2026</span>
       </div>
-      <div class="term-body">
-        <svg viewBox="0 0 660 132" xmlns="http://www.w3.org/2000/svg"
-             role="img" aria-label="Signal path: a soil sensor sends a reading over i2c to an stm32 running Tock OS, over uart to an esp32 that writes to microSD, over lora to a gateway at the farm, and finally over http to the DirtViz dashboard.">
-          <style>
-            @keyframes travel {
-              0%   { transform: translateX(0);     opacity: 0 }
-              5%   { opacity: 1 }
-              93%  { opacity: 1 }
-              100% { transform: translateX(520px); opacity: 0 }
-            }
-            @keyframes lit {
-              0%, 100% { fill: #6e7681 }
-              9%       { fill: #3fb950 }
-              26%      { fill: #6e7681 }
-            }
-            .pkt { animation: travel 5s linear infinite; }
-            .hop { animation: lit 5s linear infinite; }
-            .d2 { animation-delay: 1s }
-            .d3 { animation-delay: 2s }
-            .d4 { animation-delay: 3s }
-            .d5 { animation-delay: 4s }
-            .lbl  { font: 600 11px ui-monospace, Consolas, monospace; fill: #c9d1d9 }
-            .sml  { font: 400 9px  ui-monospace, Consolas, monospace; fill: #6e7681 }
-            .wire { font: 400 9px  ui-monospace, Consolas, monospace; fill: #d29922 }
-            @media (prefers-reduced-motion: reduce) {
-              .pkt, .hop { animation: none }
-              .hop { fill: #3fb950 }
-            }
-          </style>
-
-          <line x1="70" y1="58" x2="590" y2="58" stroke="#30363d" stroke-width="1"/>
-
-          <circle class="hop"    cx="70"  cy="58" r="6" fill="#6e7681"/>
-          <circle class="hop d2" cx="200" cy="58" r="6" fill="#6e7681"/>
-          <circle class="hop d3" cx="330" cy="58" r="6" fill="#6e7681"/>
-          <circle class="hop d4" cx="460" cy="58" r="6" fill="#6e7681"/>
-          <circle class="hop d5" cx="590" cy="58" r="6" fill="#6e7681"/>
-
-          <g class="pkt">
-            <rect x="66" y="54" width="8" height="8" rx="1.5" fill="#3fb950"/>
-          </g>
-
-          <text class="wire" x="135" y="50" text-anchor="middle">i2c</text>
-          <text class="wire" x="265" y="50" text-anchor="middle">uart</text>
-          <text class="wire" x="395" y="50" text-anchor="middle">lora</text>
-          <text class="wire" x="525" y="50" text-anchor="middle">http</text>
-
-          <text class="lbl" x="70"  y="84" text-anchor="middle">sensor</text>
-          <text class="sml" x="70"  y="97" text-anchor="middle">soil</text>
-
-          <text class="lbl" x="200" y="84" text-anchor="middle">stm32</text>
-          <text class="sml" x="200" y="97" text-anchor="middle">tock os</text>
-
-          <text class="lbl" x="330" y="84" text-anchor="middle">esp32</text>
-          <text class="sml" x="330" y="97" text-anchor="middle">microsd</text>
-
-          <text class="lbl" x="460" y="84" text-anchor="middle">gateway</text>
-          <text class="sml" x="460" y="97" text-anchor="middle">the farm</text>
-
-          <text class="lbl" x="590" y="84" text-anchor="middle">dirtviz</text>
-          <text class="sml" x="590" y="97" text-anchor="middle">dashboard</text>
-
-          <text class="sml" x="330" y="122" text-anchor="middle" fill="#8b949e">
-            my job is finding the hop where the reading stops being true
-          </text>
-        </svg>
+      <div>
+        <span class="lab">Minors</span>
+        <span class="val">Electrical Engineering, Computer Science</span>
+      </div>
+      <div>
+        <span class="lab">Focus</span>
+        <span class="val">Operating system internals, embedded firmware, digital design</span>
+      </div>
+      <div>
+        <span class="lab">Research</span>
+        <span class="val">UC Santa Cruz jLab (ENTS), PICO compute cluster</span>
+      </div>
+      <div>
+        <span class="lab">Status</span>
+        <span class="val"><span class="ok">Open</span> to new grad roles in systems, embedded, and hardware</span>
       </div>
     </div>
+
+    <figure class="fig">
+      <div class="frame">
+        <div class="scroll">
+          <svg viewBox="0 0 660 118" xmlns="http://www.w3.org/2000/svg"
+               role="img" aria-label="ENTS data path: a soil sensor sends a reading over i2c to an stm32 running Tock OS, over uart to an esp32 writing microSD, over lora to a gateway at the farm, and over http to the DirtViz dashboard.">
+            <style>
+              @keyframes travel {
+                0% { transform: translateX(0); opacity: 0 }
+                5% { opacity: 1 } 93% { opacity: 1 }
+                100% { transform: translateX(520px); opacity: 0 }
+              }
+              @keyframes lit {
+                0%, 100% { fill: #5f5f5a } 9% { fill: #d29922 } 26% { fill: #5f5f5a }
+              }
+              .pkt { animation: travel 5s linear infinite }
+              .hop { animation: lit 5s linear infinite }
+              .d2 { animation-delay: 1s } .d3 { animation-delay: 2s }
+              .d4 { animation-delay: 3s } .d5 { animation-delay: 4s }
+              .n { font: 600 11px ui-monospace, Consolas, monospace; fill: #e9e8e5 }
+              .s { font: 400 9px  ui-monospace, Consolas, monospace; fill: #5f5f5a }
+              .w { font: 400 9px  ui-monospace, Consolas, monospace; fill: #85857f }
+              @media (prefers-reduced-motion: reduce) {
+                .pkt { animation: none } .hop { animation: none; fill: #d29922 }
+              }
+            </style>
+            <line x1="70" y1="52" x2="590" y2="52" stroke="#26282b" stroke-width="1.5"/>
+            <circle class="hop"    cx="70"  cy="52" r="5.5" fill="#5f5f5a"/>
+            <circle class="hop d2" cx="200" cy="52" r="5.5" fill="#5f5f5a"/>
+            <circle class="hop d3" cx="330" cy="52" r="5.5" fill="#5f5f5a"/>
+            <circle class="hop d4" cx="460" cy="52" r="5.5" fill="#5f5f5a"/>
+            <circle class="hop d5" cx="590" cy="52" r="5.5" fill="#5f5f5a"/>
+            <g class="pkt"><rect x="66.5" y="48.5" width="7" height="7" fill="#d29922"/></g>
+            <text class="w" x="135" y="44" text-anchor="middle">i2c</text>
+            <text class="w" x="265" y="44" text-anchor="middle">uart</text>
+            <text class="w" x="395" y="44" text-anchor="middle">lora</text>
+            <text class="w" x="525" y="44" text-anchor="middle">http</text>
+            <text class="n" x="70"  y="78" text-anchor="middle">sensor</text>
+            <text class="s" x="70"  y="91" text-anchor="middle">soil</text>
+            <text class="n" x="200" y="78" text-anchor="middle">stm32</text>
+            <text class="s" x="200" y="91" text-anchor="middle">tock os</text>
+            <text class="n" x="330" y="78" text-anchor="middle">esp32</text>
+            <text class="s" x="330" y="91" text-anchor="middle">microsd</text>
+            <text class="n" x="460" y="78" text-anchor="middle">gateway</text>
+            <text class="s" x="460" y="91" text-anchor="middle">the farm</text>
+            <text class="n" x="590" y="78" text-anchor="middle">dirtviz</text>
+            <text class="s" x="590" y="91" text-anchor="middle">dashboard</text>
+          </svg>
+        </div>
+      </div>
+      <figcaption>
+        <span class="lab amber">Fig. 1</span>
+        <p>ENTS data path, sensor to dashboard. My job is finding the hop where the reading stops being true.</p>
+      </figcaption>
+    </figure>
   </header>
 
-  <section id="about">
-    <h2>cat about.txt</h2>
-    <div class="rule"></div>
-    <p>
-      Most of what I enjoy sits at a boundary: where a sensor reading becomes a
-      packet, where C becomes a scheduling decision, where Verilog becomes a
-      tile on a die. The interesting failures live there too, which is usually
-      what pulls me in.
+  <section id="projects">
+    <div class="shead">
+      <span class="n">1</span>
+      <h2>Projects</h2>
+      <span class="rule"></span>
+      <span class="count">8 frames &middot; scroll &rarr;</span>
+    </div>
+
+    <div class="sheet">
+
+      <a class="frame-card" href="https://github.com/Azzu-bear/TinyTapeout_sky_MatrixInversion">
+        <div class="sprocket">
+          <span class="lab">1.01</span>
+          <span class="lab amber">ASIC</span>
+        </div>
+        <div class="field f1 fig-bg"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="26" y="20" width="238" height="110" fill="none" stroke="#5f5f5a"/><rect x="34" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="34" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="54" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="54" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="74" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="74" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="94" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="94" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="114" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="114" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="134" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="134" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="154" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="154" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="174" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="174" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="194" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="194" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="214" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="214" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="234" y="14" width="7" height="6" fill="#5f5f5a"/><rect x="234" y="130" width="7" height="6" fill="#5f5f5a"/><rect x="20" y="28" width="6" height="7" fill="#5f5f5a"/><rect x="264" y="28" width="6" height="7" fill="#5f5f5a"/><rect x="20" y="46" width="6" height="7" fill="#5f5f5a"/><rect x="264" y="46" width="6" height="7" fill="#5f5f5a"/><rect x="20" y="64" width="6" height="7" fill="#5f5f5a"/><rect x="264" y="64" width="6" height="7" fill="#5f5f5a"/><rect x="20" y="82" width="6" height="7" fill="#5f5f5a"/><rect x="264" y="82" width="6" height="7" fill="#5f5f5a"/><rect x="20" y="100" width="6" height="7" fill="#5f5f5a"/><rect x="264" y="100" width="6" height="7" fill="#5f5f5a"/><rect x="20" y="118" width="6" height="7" fill="#5f5f5a"/><rect x="264" y="118" width="6" height="7" fill="#5f5f5a"/><rect x="40" y="36" width="9" height="8" fill="#5f5f5a" opacity=".55"/><rect x="52" y="36" width="14" height="8" fill="#5f5f5a" opacity=".55"/><rect x="69" y="36" width="7" height="8" fill="#5f5f5a" opacity=".55"/><rect x="79" y="36" width="11" height="8" fill="#5f5f5a" opacity=".55"/><rect x="93" y="36" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="104" y="36" width="16" height="8" fill="#5f5f5a" opacity=".55"/><rect x="123" y="36" width="10" height="8" fill="#5f5f5a" opacity=".55"/><rect x="136" y="36" width="7" height="8" fill="#5f5f5a" opacity=".55"/><rect x="146" y="36" width="13" height="8" fill="#5f5f5a" opacity=".55"/><rect x="162" y="36" width="9" height="8" fill="#5f5f5a" opacity=".55"/><rect x="174" y="36" width="12" height="8" fill="#5f5f5a" opacity=".55"/><rect x="189" y="36" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="200" y="36" width="15" height="8" fill="#5f5f5a" opacity=".55"/><rect x="218" y="36" width="7" height="8" fill="#5f5f5a" opacity=".55"/><rect x="228" y="36" width="10" height="8" fill="#5f5f5a" opacity=".55"/><rect x="40" y="51" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="51" y="51" width="13" height="8" fill="#5f5f5a" opacity=".55"/><rect x="67" y="51" width="9" height="8" fill="#5f5f5a" opacity=".55"/><rect x="79" y="51" width="14" height="8" fill="#5f5f5a" opacity=".55"/><rect x="96" y="51" width="7" height="8" fill="#5f5f5a" opacity=".55"/><rect x="106" y="51" width="11" height="8" fill="#5f5f5a" opacity=".55"/><rect x="120" y="51" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="131" y="51" width="16" height="8" fill="#5f5f5a" opacity=".55"/><rect x="216" y="51" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="227" y="51" width="15" height="8" fill="#5f5f5a" opacity=".55"/><rect x="40" y="66" width="10" height="8" fill="#5f5f5a" opacity=".55"/><rect x="53" y="66" width="11" height="8" fill="#5f5f5a" opacity=".55"/><rect x="67" y="66" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="78" y="66" width="13" height="8" fill="#5f5f5a" opacity=".55"/><rect x="94" y="66" width="9" height="8" fill="#5f5f5a" opacity=".55"/><rect x="106" y="66" width="14" height="8" fill="#5f5f5a" opacity=".55"/><rect x="123" y="66" width="7" height="8" fill="#5f5f5a" opacity=".55"/><rect x="133" y="66" width="11" height="8" fill="#5f5f5a" opacity=".55"/><rect x="216" y="66" width="9" height="8" fill="#5f5f5a" opacity=".55"/><rect x="228" y="66" width="12" height="8" fill="#5f5f5a" opacity=".55"/><rect x="40" y="81" width="15" height="8" fill="#5f5f5a" opacity=".55"/><rect x="58" y="81" width="7" height="8" fill="#5f5f5a" opacity=".55"/><rect x="68" y="81" width="10" height="8" fill="#5f5f5a" opacity=".55"/><rect x="81" y="81" width="11" height="8" fill="#5f5f5a" opacity=".55"/><rect x="95" y="81" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="106" y="81" width="13" height="8" fill="#5f5f5a" opacity=".55"/><rect x="122" y="81" width="9" height="8" fill="#5f5f5a" opacity=".55"/><rect x="134" y="81" width="14" height="8" fill="#5f5f5a" opacity=".55"/><rect x="218" y="81" width="7" height="8" fill="#5f5f5a" opacity=".55"/><rect x="228" y="81" width="13" height="8" fill="#5f5f5a" opacity=".55"/><rect x="40" y="96" width="12" height="8" fill="#5f5f5a" opacity=".55"/><rect x="55" y="96" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="66" y="96" width="15" height="8" fill="#5f5f5a" opacity=".55"/><rect x="84" y="96" width="7" height="8" fill="#5f5f5a" opacity=".55"/><rect x="94" y="96" width="10" height="8" fill="#5f5f5a" opacity=".55"/><rect x="107" y="96" width="11" height="8" fill="#5f5f5a" opacity=".55"/><rect x="121" y="96" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="132" y="96" width="13" height="8" fill="#5f5f5a" opacity=".55"/><rect x="231" y="96" width="10" height="8" fill="#5f5f5a" opacity=".55"/><rect x="40" y="111" width="13" height="8" fill="#5f5f5a" opacity=".55"/><rect x="56" y="111" width="9" height="8" fill="#5f5f5a" opacity=".55"/><rect x="68" y="111" width="12" height="8" fill="#5f5f5a" opacity=".55"/><rect x="83" y="111" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="94" y="111" width="15" height="8" fill="#5f5f5a" opacity=".55"/><rect x="112" y="111" width="7" height="8" fill="#5f5f5a" opacity=".55"/><rect x="122" y="111" width="10" height="8" fill="#5f5f5a" opacity=".55"/><rect x="135" y="111" width="11" height="8" fill="#5f5f5a" opacity=".55"/><rect x="149" y="111" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="160" y="111" width="13" height="8" fill="#5f5f5a" opacity=".55"/><rect x="176" y="111" width="9" height="8" fill="#5f5f5a" opacity=".55"/><rect x="188" y="111" width="14" height="8" fill="#5f5f5a" opacity=".55"/><rect x="205" y="111" width="7" height="8" fill="#5f5f5a" opacity=".55"/><rect x="215" y="111" width="11" height="8" fill="#5f5f5a" opacity=".55"/><rect x="229" y="111" width="8" height="8" fill="#5f5f5a" opacity=".55"/><rect x="148" y="50" width="66" height="50" fill="#141517"/><rect x="148" y="50" width="66" height="50" fill="#d29922" opacity=".12"/><rect x="148" y="50" width="66" height="50" fill="none" stroke="#d29922" stroke-width="1.5"/><text x="181" y="72" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#d29922">1x1</text><text x="181" y="87" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#d29922">50 MHz</text></svg><span class="tag">ASIC</span></div>
+        <div class="frame-body">
+          <h3>Matrix Inversion ASIC</h3>
+          <span class="lab stack">Verilog &middot; cocotb &middot; OpenLane &middot; SKY130</span>
+          <p>A 2x2 linear system solver (Ax=b, Q4.4 fixed point) taped out through TinyTapeout. One shared multiplier and a 12 state FSM fit into a 1x1 tile at 50 MHz.</p>
+          <div class="foot">
+            <span class="lab">Taped out</span>
+            <span class="lab src">Source</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="frame-card" href="https://github.com/Azzu-bear/project4-pintos-threads">
+        <div class="sprocket">
+          <span class="lab">1.02</span>
+          <span class="lab amber">Kernel</span>
+        </div>
+        <div class="field f2 fig-bg"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 z" fill="#d29922"/></marker></defs><text x="24" y="36" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#85857f">8254 TICK</text><path d="M62 42 L62 58" stroke="#d29922" stroke-width="1.5" marker-end="url(#ar)"/><rect x="58" y="62" width="34" height="26" fill="none" stroke="#d29922"/><text x="75" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#d29922">12</text><line x1="92" y1="75" x2="104" y2="75" stroke="#5f5f5a"/><rect x="104" y="62" width="34" height="26" fill="none" stroke="#5f5f5a"/><text x="121" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#85857f">31</text><line x1="138" y1="75" x2="150" y2="75" stroke="#5f5f5a"/><rect x="150" y="62" width="34" height="26" fill="none" stroke="#5f5f5a"/><text x="167" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#85857f">47</text><line x1="184" y1="75" x2="196" y2="75" stroke="#5f5f5a"/><rect x="196" y="62" width="34" height="26" fill="none" stroke="#5f5f5a"/><text x="213" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#85857f">90</text><text x="24" y="114" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="8.5" fill="#5f5f5a">sleep_list, sorted</text></svg><span class="tag">Kernel</span></div>
+        <div class="frame-body">
+          <h3>Pintos Kernel Scheduler</h3>
+          <span class="lab stack">C &middot; OS internals</span>
+          <p>Replaced busy waiting with an ordered sleep list and timed wakeups from the 8254 timer ISR, interrupts disabled around insertion so the list is never edited under the handler.</p>
+          <div class="foot">
+            <span class="lab">6 / 6 tests</span>
+            <span class="lab src">Source</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="frame-card" href="https://github.com/Azzu-bear/sluggers-of-the-lost-goal">
+        <div class="sprocket">
+          <span class="lab">1.03</span>
+          <span class="lab amber">Robot</span>
+        </div>
+        <div class="field f3"><picture><source type="image/webp" srcset="assets/proj-robot.webp 1x, assets/proj-robot@2x.webp 2x"><img src="assets/proj-robot.jpg" srcset="assets/proj-robot.jpg 1x, assets/proj-robot@2x.jpg 2x" alt="Top-down view of the Sluggers robot chassis: plywood deck, motors, protoboard and wiring" width="290" height="150" loading="lazy" decoding="async"></picture><span class="tag">Robot</span></div>
+        <div class="frame-body">
+          <h3>Sluggers of the Lost Goal</h3>
+          <span class="lab stack">Embedded C &middot; ESP-IDF &middot; HSM</span>
+          <p>Five weeks, $200. A PIC32 runs the state machines; an ESP32-C3 fans eight VL53L1X time of flight sensors out behind an I2C mux, streaming sweeps over UART.</p>
+          <div class="foot">
+            <span class="lab">Competition</span>
+            <span class="lab src">Source</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="frame-card" href="https://github.com/Azzu-bear/fpga-vga-arcade">
+        <div class="sprocket">
+          <span class="lab">1.04</span>
+          <span class="lab amber">VGA</span>
+        </div>
+        <div class="field f4 fig-bg"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="30" y="18" width="230" height="114" fill="none" stroke="#5f5f5a"/><line x1="107" y1="18" x2="107" y2="132" stroke="#5f5f5a" stroke-dasharray="4 5"/><line x1="184" y1="18" x2="184" y2="132" stroke="#5f5f5a" stroke-dasharray="4 5"/><rect x="46" y="38" width="44" height="13" fill="#d29922" opacity=".85"/><rect x="200" y="56" width="44" height="13" fill="#d29922" opacity=".85"/><rect x="123" y="26" width="44" height="13" fill="#d29922" opacity=".5"/><rect x="128" y="106" width="30" height="18" fill="#3fb950"/><line x1="30" y1="90" x2="260" y2="90" stroke="#3fb950" stroke-width="1.5" opacity=".7"/><text x="256" y="103" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#3fb950">BEAM</text></svg><span class="tag">VGA</span></div>
+        <div class="frame-body">
+          <h3>FPGA VGA Arcade Game</h3>
+          <span class="lab stack">Verilog &middot; Vivado &middot; Basys3</span>
+          <p>A three lane endless runner drawn live to a VGA monitor. No framebuffer: every object answers "is this pixel inside me?" combinationally from the beam position.</p>
+          <div class="foot">
+            <span class="lab">No framebuffer</span>
+            <span class="lab src">Source</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="frame-card" href="https://github.com/jlab-sensing/ENTS-tock">
+        <div class="sprocket">
+          <span class="lab">1.05</span>
+          <span class="lab amber">Firmware</span>
+        </div>
+        <div class="field f5 fig-bg"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><line x1="44" y1="72" x2="248" y2="72" stroke="#5f5f5a"/><circle cx="44" cy="72" r="5" fill="#d29922"/><text x="44" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#85857f">soil</text><circle cx="95" cy="72" r="5" fill="#5f5f5a"/><text x="95" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#85857f">stm32</text><circle cx="146" cy="72" r="5" fill="#5f5f5a"/><text x="146" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#85857f">esp32</text><circle cx="197" cy="72" r="5" fill="#5f5f5a"/><text x="197" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#85857f">gw</text><circle cx="248" cy="72" r="5" fill="#d29922"/><text x="248" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#85857f">viz</text><rect x="88" y="68" width="8" height="8" fill="#3fb950"/><text x="146" y="44" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="8.5" fill="#d29922">i2c / uart / lora</text></svg><span class="tag">Firmware</span></div>
+        <div class="frame-body">
+          <h3>ENTS-tock</h3>
+          <span class="lab stack">Tock OS &middot; I2C &middot; protobuf</span>
+          <p>Lab firmware I contribute to. Routed STM32 microlog output over I2C to an ESP32 so it lands on microSD, extending the protobuf schema without growing the RAM footprint.</p>
+          <div class="foot">
+            <span class="lab">Upstream</span>
+            <span class="lab src">Source</span>
+          </div>
+        </div>
+      </a>
+
+      <div class="frame-card">
+        <div class="sprocket">
+          <span class="lab">1.06</span>
+          <span class="lab amber">Concurrency</span>
+        </div>
+        <div class="field f6 fig-bg"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><line x1="145" y1="41" x2="103" y2="76" stroke="#d29922"/><line x1="145" y1="41" x2="187" y2="76" stroke="#5f5f5a"/><line x1="103" y1="76" x2="72" y2="111" stroke="#5f5f5a"/><line x1="103" y1="76" x2="134" y2="111" stroke="#d29922"/><line x1="187" y1="76" x2="218" y2="111" stroke="#5f5f5a"/><circle cx="145" cy="41" r="11" fill="none" stroke="#5f5f5a" stroke-width="1.4"/><circle cx="103" cy="76" r="11" fill="none" stroke="#d29922" stroke-width="1.4"/><circle cx="187" cy="76" r="11" fill="none" stroke="#5f5f5a" stroke-width="1.4"/><circle cx="72" cy="111" r="11" fill="none" stroke="#5f5f5a" stroke-width="1.4"/><circle cx="134" cy="111" r="11" fill="none" stroke="#d29922" stroke-width="1.4"/><circle cx="218" cy="111" r="11" fill="none" stroke="#5f5f5a" stroke-width="1.4"/><rect x="99" y="71" width="9" height="7" rx="1" fill="#d29922"/><rect x="130" y="106" width="9" height="7" rx="1" fill="#d29922"/><text x="258" y="134" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#d29922">MUTEX</text></svg><span class="tag">Concurrency</span></div>
+        <div class="frame-body">
+          <h3>Thread-Safe Binary Search Tree</h3>
+          <span class="lab stack">C &middot; pthreads &middot; Valgrind</span>
+          <p>Fine grained mutex locking for insert, search, and delete across many threads, hardened against races and leaks under sustained contention until runs came back clean.</p>
+          <div class="foot">
+            <span class="lab">Zero leaks</span>
+            <span class="lab src">No repo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame-card">
+        <div class="sprocket">
+          <span class="lab">1.07</span>
+          <span class="lab amber">Networking</span>
+        </div>
+        <div class="field f7 fig-bg"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><line x1="112" y1="75" x2="212" y2="28" stroke="#5f5f5a"/><circle cx="218" cy="28" r="5" fill="#5f5f5a"/><line x1="112" y1="75" x2="212" y2="47" stroke="#5f5f5a"/><circle cx="218" cy="47" r="5" fill="#3fb950"/><line x1="112" y1="75" x2="212" y2="66" stroke="#5f5f5a"/><circle cx="218" cy="66" r="5" fill="#5f5f5a"/><line x1="112" y1="75" x2="212" y2="85" stroke="#5f5f5a"/><circle cx="218" cy="85" r="5" fill="#5f5f5a"/><line x1="112" y1="75" x2="212" y2="104" stroke="#5f5f5a"/><circle cx="218" cy="104" r="5" fill="#3fb950"/><line x1="112" y1="75" x2="212" y2="123" stroke="#5f5f5a"/><circle cx="218" cy="123" r="5" fill="#5f5f5a"/><rect x="52" y="57" width="60" height="36" fill="none" stroke="#d29922" stroke-width="1.5"/><text x="82" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#d29922">select()</text><text x="82" y="112" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#85857f">1 THREAD</text></svg><span class="tag">Networking</span></div>
+        <div class="frame-body">
+          <h3>Multi-Client TCP Chat Server</h3>
+          <span class="lab stack">C &middot; sockets &middot; select()</span>
+          <p>select() based I/O multiplexing serving many clients concurrently on one thread, handling connects, disconnects, broadcast, and clean session teardown.</p>
+          <div class="foot">
+            <span class="lab">Single thread</span>
+            <span class="lab src">No repo</span>
+          </div>
+        </div>
+      </div>
+
+      <a class="frame-card" href="https://github.com/Azzu-bear/cse121-labs">
+        <div class="sprocket">
+          <span class="lab">1.08</span>
+          <span class="lab amber">Bring up</span>
+        </div>
+        <div class="field f8 fig-bg"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="66" y="34" width="120" height="82" fill="none" stroke="#5f5f5a" stroke-width="1.4"/><rect x="76" y="28" width="4" height="6" fill="#5f5f5a"/><rect x="76" y="116" width="4" height="6" fill="#5f5f5a"/><rect x="89" y="28" width="4" height="6" fill="#5f5f5a"/><rect x="89" y="116" width="4" height="6" fill="#5f5f5a"/><rect x="102" y="28" width="4" height="6" fill="#5f5f5a"/><rect x="102" y="116" width="4" height="6" fill="#5f5f5a"/><rect x="115" y="28" width="4" height="6" fill="#5f5f5a"/><rect x="115" y="116" width="4" height="6" fill="#5f5f5a"/><rect x="128" y="28" width="4" height="6" fill="#5f5f5a"/><rect x="128" y="116" width="4" height="6" fill="#5f5f5a"/><rect x="141" y="28" width="4" height="6" fill="#5f5f5a"/><rect x="141" y="116" width="4" height="6" fill="#5f5f5a"/><rect x="154" y="28" width="4" height="6" fill="#5f5f5a"/><rect x="154" y="116" width="4" height="6" fill="#5f5f5a"/><rect x="167" y="28" width="4" height="6" fill="#5f5f5a"/><rect x="167" y="116" width="4" height="6" fill="#5f5f5a"/><rect x="180" y="28" width="4" height="6" fill="#5f5f5a"/><rect x="180" y="116" width="4" height="6" fill="#5f5f5a"/><rect x="92" y="58" width="46" height="34" fill="none" stroke="#d29922"/><text x="115" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="8.5" fill="#d29922">C3</text><line x1="186" y1="60" x2="226" y2="60" stroke="#d29922"/><line x1="186" y1="73" x2="226" y2="73" stroke="#d29922"/><text x="230" y="63" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#85857f">SDA</text><text x="230" y="76" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#85857f">SCL</text><path d="M196 96 a10 10 0 0 1 0 15" fill="none" stroke="#3fb950" stroke-width="1.4"/><path d="M204 90 a17 17 0 0 1 0 27" fill="none" stroke="#3fb950" stroke-width="1.4" opacity=".55"/><text x="230" y="108" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#85857f">BLE</text></svg><span class="tag">Bring up</span></div>
+        <div class="frame-body">
+          <h3>Embedded C on ESP32-C3</h3>
+          <span class="lab stack">C &middot; ESP-IDF &middot; I2C &middot; BLE</span>
+          <p>I2C sensor bring up, BLE HID, and RTOS tasks. The lab work that made most of the rest of this sheet possible.</p>
+          <div class="foot">
+            <span class="lab">Bring up</span>
+            <span class="lab src">Source</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+  </section>
+
+  <section id="log">
+    <div class="shead">
+      <span class="n">2</span>
+      <h2>Log</h2>
+      <span class="rule"></span>
+      <span class="count">3 entries</span>
+    </div>
+
+    <div class="entry">
+      <span class="lab">Jul 2026 &ndash; present</span>
+      <div>
+        <h3>Undergraduate Researcher</h3>
+        <p class="org">UC Santa Cruz jLab (Josephson Lab), ENTS Project</p>
+        <ul>
+          <li>Trace the full ENTS data path, firmware through transport to the DirtViz dashboard, to locate where field readings are lost or silently corrupted before display.</li>
+          <li>Decode nanopb Protocol Buffer telemetry to verify packets survive transport intact, isolating failures to a specific stage rather than the pipeline at large.</li>
+          <li>Build a repeatable validation procedure so any lab member can certify a node's data end to end, replacing ad hoc spot checks that let failures reach production dashboards.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="entry">
+      <span class="lab">Jun 2026 &ndash; present</span>
+      <div>
+        <h3>Undergraduate Researcher</h3>
+        <p class="org">PICO Compute Cluster, under Prof. Abel Souza</p>
+        <ul>
+          <li>Configuring and testing the department's PICO compute cluster for Kubernetes research workloads.</li>
+          <li>Evaluating Incus system containers and VMs on Linux to build reproducible, isolated experiment environments, prototyping container and VM provisioning workflows.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="entry">
+      <span class="lab">Feb &ndash; Jun 2026</span>
+      <div>
+        <h3>Rides Operator</h3>
+        <p class="org">Santa Cruz Beach Boardwalk</p>
+        <ul>
+          <li>Ran mechanical systems and enforced safety protocol for 100+ guests a day, which is a fairly direct education in fault detection when the safety critical system is standing right in front of you.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="notes">
+    <div class="shead">
+      <span class="n">3</span>
+      <h2>Notes</h2>
+      <span class="rule"></span>
+    </div>
+    <p class="body">
+      Most of what I enjoy sits at a boundary: <b>where a sensor reading
+      becomes a packet, where C becomes a scheduling decision, where Verilog
+      becomes a tile on a die.</b> The interesting failures live there too,
+      which is usually what pulls me in.
     </p>
-    <p>
+    <p class="body">
       Right now that means field reliability for solar powered soil sensing
       nodes at the UC Santa Cruz farm, a compute cluster for research
       workloads, and a 2x2 matrix solver I taped out on SKY130. Before that it
       was kernel threading in Pintos, a VGA game with no framebuffer, and a
       competition robot that only started working the week it had to.
     </p>
-    <p class="note">
+    <p class="body">
       Away from a terminal: cricket, table tennis, beach volleyball, and
       cooking for more people than I planned for.
     </p>
   </section>
 
-  <section id="work">
-    <h2>ls -lt work/</h2>
-    <div class="rule"></div>
-
-    <div class="job">
-      <h3>Undergraduate Researcher <span class="where">&middot; UC Santa Cruz jLab (Josephson Lab), ENTS</span></h3>
-      <div class="when">Jul 2026 &ndash; present</div>
-      <ul>
-        <li>Trace the full ENTS data path, firmware through transport to the DirtViz dashboard, to locate where field readings are lost or silently corrupted before display.</li>
-        <li>Decode nanopb Protocol Buffer telemetry to verify packets survive transport intact, isolating failures to a specific stage rather than the pipeline at large.</li>
-        <li>Build a repeatable validation procedure so any lab member can certify a node's data end to end, replacing ad hoc spot checks that let failures reach production dashboards.</li>
-      </ul>
+  <section id="stack">
+    <div class="shead">
+      <span class="n">4</span>
+      <h2>Stack</h2>
+      <span class="rule"></span>
     </div>
-
-    <div class="job">
-      <h3>Undergraduate Researcher <span class="where">&middot; PICO compute cluster, under Prof. Abel Souza</span></h3>
-      <div class="when">Jun 2026 &ndash; present &middot; independent study</div>
-      <ul>
-        <li>Configuring and testing the department's PICO compute cluster for Kubernetes research workloads.</li>
-        <li>Evaluating Incus system containers and VMs on Linux to build reproducible, isolated experiment environments, prototyping container and VM provisioning workflows.</li>
-      </ul>
-    </div>
-
-    <div class="job">
-      <h3>Rides Operator <span class="where">&middot; Santa Cruz Beach Boardwalk</span></h3>
-      <div class="when">Feb 2026 &ndash; Jun 2026</div>
-      <ul>
-        <li>Ran mechanical systems and enforced safety protocol for 100+ guests a day, which is a fairly direct education in fault detection when the safety critical system is standing right in front of you.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="projects">
-    <h2>ls projects/</h2>
-    <div class="rule"></div>
-
-    <div class="grid">
-
-      <div class="card">
-        <h3><a href="https://github.com/Azzu-bear/TinyTapeout_sky_MatrixInversion">Matrix Inversion ASIC</a></h3>
-        <div class="stack">verilog &middot; cocotb &middot; openlane &middot; sky130</div>
-        <p>
-          A 2x2 linear system solver (Ax=b, Q4.4 fixed point) taped out through
-          TinyTapeout. One shared multiplier and a 12 state FSM fit into a 1x1
-          tile at 50 MHz. Verified in cocotb at RTL and gate level, then
-          hardened to GDS with OpenLane.
-        </p>
-        <div class="foot">silicon</div>
-      </div>
-
-      <div class="card">
-        <h3><a href="https://github.com/Azzu-bear/project4-pintos-threads">Pintos Kernel Scheduler</a></h3>
-        <div class="stack">c &middot; os internals &middot; thread scheduling</div>
-        <p>
-          Replaced busy waiting in the Pintos kernel with an ordered sleep list
-          and timed wakeups driven from the 8254 timer ISR. Interrupts disabled
-          around insertion so the list is never edited out from under the
-          handler. All six alarm tests pass under QEMU.
-        </p>
-        <div class="foot">kernel</div>
-      </div>
-
-      <div class="card">
-        <h3><a href="https://github.com/Azzu-bear/sluggers-of-the-lost-goal">Sluggers of the Lost Goal</a></h3>
-        <div class="stack">embedded c &middot; esp-idf &middot; uart &middot; hsm</div>
-        <p>
-          Autonomous ball shooting robot, five weeks and a $200 budget. A PIC32
-          runs the hierarchical state machines; an ESP32-C3 fans eight VL53L1X
-          time of flight sensors out behind an I2C mux. It shipped with a fixed
-          flywheel speed instead of live ranging, because one bad return in the
-          seconds before a shot cost more than the adaptivity was worth.
-        </p>
-        <div class="foot">robotics</div>
-      </div>
-
-      <div class="card">
-        <h3><a href="https://github.com/Azzu-bear/fpga-vga-arcade">FPGA VGA Arcade Game</a></h3>
-        <div class="stack">verilog &middot; vivado &middot; basys3</div>
-        <p>
-          A three lane endless runner drawn live to a VGA monitor. No
-          framebuffer: a Basys3 cannot hold a 640x480 frame and there is no
-          time to read one at 40 ns per pixel, so every object answers "is this
-          pixel inside me?" combinationally from the beam position.
-        </p>
-        <div class="foot">fpga</div>
-      </div>
-
-      <div class="card">
-        <h3><a href="https://github.com/jlab-sensing/ENTS-tock">ENTS-tock</a></h3>
-        <div class="stack">tock os &middot; i2c &middot; protobuf</div>
-        <p>
-          Lab firmware I contribute to. Routed STM32 microlog output over I2C
-          to an ESP32 so it lands on a microSD card, which meant extending the
-          protobuf schema without growing the RAM footprint.
-        </p>
-        <div class="foot">firmware &middot; upstream</div>
-      </div>
-
-      <div class="card">
-        <h3><a href="https://github.com/Azzu-bear/cse121-labs">Embedded C on ESP32-C3</a></h3>
-        <div class="stack">c &middot; esp-idf &middot; i2c &middot; ble</div>
-        <p>
-          I2C sensor bring up, BLE HID, and RTOS tasks. The lab work that made
-          most of the rest of this page possible, kept around because bring up
-          notes are worth more later than they look at the time.
-        </p>
-        <div class="foot">embedded</div>
-      </div>
-
-      <div class="card">
-        <h3>Thread-Safe Binary Search Tree</h3>
-        <div class="stack">c &middot; pthreads &middot; valgrind</div>
-        <p>
-          A concurrent BST using fine grained mutex locking to support insert,
-          search, and delete across many threads. Hardened against races and
-          leaks with Valgrind under sustained contention until the runs came
-          back clean.
-        </p>
-        <div class="foot">concurrency</div>
-      </div>
-
-      <div class="card">
-        <h3>Multi-Client TCP Chat Server</h3>
-        <div class="stack">c &middot; posix sockets &middot; select()</div>
-        <p>
-          A chat server built on select() based I/O multiplexing, serving many
-          clients concurrently on a single thread and handling connects,
-          disconnects, broadcast, and clean session teardown without disrupting
-          anyone else on the server.
-        </p>
-        <div class="foot">networking</div>
-      </div>
-
-    </div>
-  </section>
-
-  <section id="toolbox">
-    <h2>which -a</h2>
-    <div class="rule"></div>
-
-    <div class="tools">
+    <div class="stackgrid">
       <div>
-        <span class="k">languages</span>
+        <span class="lab">Languages</span>
         <span class="v">C<i>&middot;</i>C++<i>&middot;</i>Python<i>&middot;</i>Verilog<i>&middot;</i>Assembly (x86 / RISC-V)<i>&middot;</i>MATLAB</span>
       </div>
       <div>
-        <span class="k">systems</span>
-        <span class="v">Linux<i>&middot;</i>OS internals<i>&middot;</i>concurrency<i>&middot;</i>pthreads<i>&middot;</i>sockets<i>&middot;</i>select() multiplexing<i>&middot;</i>memory management</span>
+        <span class="lab">Systems</span>
+        <span class="v">Linux<i>&middot;</i>OS internals<i>&middot;</i>concurrency<i>&middot;</i>pthreads<i>&middot;</i>sockets<i>&middot;</i>select()<i>&middot;</i>memory management</span>
       </div>
       <div>
-        <span class="k">embedded</span>
+        <span class="lab">Embedded</span>
         <span class="v">Tock OS<i>&middot;</i>ESP-IDF<i>&middot;</i>FreeRTOS<i>&middot;</i>STM32<i>&middot;</i>ESP32<i>&middot;</i>PIC32<i>&middot;</i>I2C<i>&middot;</i>SPI<i>&middot;</i>UART<i>&middot;</i>PWM<i>&middot;</i>BLE</span>
       </div>
       <div>
-        <span class="k">silicon</span>
+        <span class="lab">Silicon</span>
         <span class="v">SKY130<i>&middot;</i>OpenLane<i>&middot;</i>cocotb<i>&middot;</i>Vivado<i>&middot;</i>Basys3</span>
       </div>
       <div>
-        <span class="k">tools</span>
+        <span class="lab">Tools</span>
         <span class="v">git<i>&middot;</i>gdb<i>&middot;</i>valgrind<i>&middot;</i>docker<i>&middot;</i>kubernetes<i>&middot;</i>incus<i>&middot;</i>wsl<i>&middot;</i>ssh<i>&middot;</i>neovim<i>&middot;</i>tmux</span>
       </div>
     </div>
   </section>
 
   <section id="contact">
-    <h2>whois azam</h2>
-    <div class="rule"></div>
-
-    <div class="contact-lines">
-      <div><span class="k">email</span> <a href="mailto:azamoham@ucsc.edu">azamoham@ucsc.edu</a></div>
-      <div><span class="k">github</span> <a href="https://github.com/Azzu-bear">github.com/Azzu-bear</a></div>
-      <div><span class="k">linkedin</span> <a href="https://www.linkedin.com/in/azam-mohamed-718780295/">azam-mohamed-718780295</a></div>
-      <div><span class="k">located</span> <span class="note">Santa Cruz, CA</span></div>
+    <div class="shead">
+      <span class="n">5</span>
+      <h2>Contact</h2>
+      <span class="rule"></span>
     </div>
-
-    <p class="note">
-      Open to new grad roles in systems, embedded, and hardware. If you have
-      something running close to the metal and it is behaving strangely, that
-      is the kind of message I answer fastest.
+    <div class="contact">
+      <div>
+        <span class="lab">Email</span>
+        <span class="v"><a href="mailto:azamoham@ucsc.edu">azamoham@ucsc.edu</a></span>
+      </div>
+      <div>
+        <span class="lab">GitHub</span>
+        <span class="v"><a href="https://github.com/Azzu-bear">github.com/Azzu-bear</a></span>
+      </div>
+      <div>
+        <span class="lab">LinkedIn</span>
+        <span class="v"><a href="https://www.linkedin.com/in/azam-mohamed-718780295/">azam-mohamed-718780295</a></span>
+      </div>
+      <div>
+        <span class="lab">Located</span>
+        <span class="v">Santa Cruz, California</span>
+      </div>
+    </div>
+    <p class="body">
+      If you have something running close to the metal and it is behaving
+      strangely, that is the kind of message I answer fastest.
     </p>
   </section>
 
   <footer>
-    <div class="art">
-<pre>    .  .  .
- .           .
-   .  ~~~~~~~   .
-  .  ~ soil  ~   .
-   .  ~~~~~~~   .
- .           .
-    '  '  '</pre>
-      <q>"the node is in the dirt, the data had better be real"</q>
-    </div>
-    <div class="colophon">
-      hand written html and css, no build step. hosted on github pages.
-    </div>
+    <span class="lab">Azam Mohamed &middot; Santa Cruz, CA</span>
+    <span class="lab">Hand written HTML &amp; CSS</span>
   </footer>
 
 </div>

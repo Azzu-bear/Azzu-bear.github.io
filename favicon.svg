@@ -1,7 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#0d1117"/>
-  <rect x="1" y="1" width="30" height="30" rx="5" fill="none" stroke="#30363d"/>
-  <text x="9" y="22" font-family="ui-monospace, Consolas, monospace"
-        font-size="16" font-weight="700" fill="#3fb950">$</text>
-  <rect x="19" y="19" width="7" height="2.5" fill="#d29922"/>
+  <rect width="32" height="32" fill="#0e0f10"/>
+  <rect x="1.5" y="1.5" width="29" height="29" fill="none" stroke="#26282b"/>
+  <!-- the signal path, in miniature: five hops, the last one live -->
+  <line x1="7" y1="16" x2="25" y2="16" stroke="#3a3c40" stroke-width="1.5"/>
+  <circle cx="7"  cy="16" r="2.2" fill="#5f5f5a"/>
+  <circle cx="13" cy="16" r="2.2" fill="#5f5f5a"/>
+  <circle cx="19" cy="16" r="2.2" fill="#5f5f5a"/>
+  <circle cx="25" cy="16" r="2.6" fill="#d29922"/>
 </svg>
