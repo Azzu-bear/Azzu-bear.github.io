@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Azam Mohamed</title>
+<meta name="description" content="Azam Mohamed, computer engineer. Operating system internals, embedded firmware, and silicon. B.S. Computer Engineering, UC Santa Cruz.">
+<meta name="author" content="Azam Mohamed">
+<meta property="og:title" content="Azam Mohamed">
+<meta property="og:description" content="I build things close to the metal: operating system internals, embedded firmware, and silicon.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://azzu-bear.github.io/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+  :root {
+    --bg:      #0d1117;
+    --panel:   #161b22;
+    --panel-2: #1c2129;
+    --line:    #30363d;
+    --line-2:  #21262d;
+    --text:    #c9d1d9;
+    --dim:     #8b949e;
+    --faint:   #6e7681;
+    --green:   #3fb950;
+    --soil:    #d29922;
+    --blue:    #58a6ff;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --wrap: 940px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    /* faint scanline wash, keeps the CRT read without hurting legibility */
+    background-image: repeating-linear-gradient(
+      to bottom, rgba(255,255,255,.012) 0 1px, transparent 1px 3px);
+  }
+
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- nav ---------- */
+
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(13,17,23,.86);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line-2);
+  }
+  nav .wrap {
+    display: flex; align-items: center; gap: 22px;
+    height: 56px; flex-wrap: wrap;
+  }
+  .brand { color: var(--faint); white-space: nowrap; font-size: 13.5px; }
+  .brand b { color: var(--green); font-weight: 600; }
+  .brand i { color: var(--soil); font-style: normal; }
+  nav ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; margin-left: auto; }
+  nav a {
+    color: var(--dim); font-size: 13.5px;
+    padding-bottom: 2px; border-bottom: 1px solid transparent;
+  }
+  nav a:hover { color: var(--green); border-bottom-color: var(--green); text-decoration: none; }
+
+  /* ---------- hero ---------- */
+
+  header { padding: 72px 0 8px; }
+
+  h1 {
+    font-size: clamp(30px, 6vw, 46px);
+    letter-spacing: -.5px;
+    margin: 0 0 6px;
+    font-weight: 700;
+    color: #e6edf3;
+  }
+  .cursor {
+    display: inline-block; width: .58em; height: 1.02em;
+    background: var(--green); vertical-align: -.14em; margin-left: .12em;
+    animation: blink 1.05s step-end infinite;
+  }
+  @keyframes blink { 0%,50% { opacity: 1 } 51%,100% { opacity: 0 } }
+
+  .role { color: var(--soil); font-size: 15px; margin: 0 0 22px; }
+
+  .lede { max-width: 62ch; color: var(--text); margin: 0 0 12px; }
+  .sub  { max-width: 62ch; color: var(--dim); font-size: 14px; margin: 0; }
+
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .links a {
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 6px 13px; font-size: 13.5px; color: var(--dim);
+    background: var(--panel);
+  }
+  .links a:hover {
+    color: var(--green); border-color: var(--green);
+    text-decoration: none; background: var(--panel-2);
+  }
+
+  /* ---------- signal path terminal ---------- */
+
+  .term {
+    margin: 44px 0 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    overflow: hidden;
+  }
+  .term-bar {
+    display: flex; align-items: center; gap: 7px;
+    padding: 9px 13px;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .term-title { margin-left: 8px; color: var(--faint); font-size: 12px; }
+  .term-body { padding: 20px 18px 22px; overflow-x: auto; }
+  .term-body svg { display: block; min-width: 620px; width: 100%; height: auto; }
+
+  /* ---------- sections ---------- */
+
+  section { padding: 60px 0 0; }
+
+  h2 {
+    font-size: 15px; font-weight: 600; margin: 0 0 4px;
+    color: var(--green); letter-spacing: .2px;
+  }
+  h2::before { content: "$ "; color: var(--faint); font-weight: 400; }
+  .rule { height: 1px; background: var(--line-2); margin: 14px 0 26px; }
+
+  p { margin: 0 0 16px; max-width: 68ch; }
+
+  .note { color: var(--dim); font-size: 14px; }
+
+  /* ---------- work ---------- */
+
+  .job {
+    border-left: 2px solid var(--line);
+    padding: 2px 0 2px 20px;
+    margin: 0 0 30px;
+    transition: border-color .15s;
+  }
+  .job:hover { border-left-color: var(--green); }
+  .job h3 { font-size: 15px; font-weight: 600; margin: 0; color: #e6edf3; }
+  .job .where { color: var(--soil); font-size: 13.5px; font-weight: 400; }
+  .job .when {
+    color: var(--faint); font-size: 12.5px; margin: 2px 0 10px;
+    text-transform: uppercase; letter-spacing: .6px;
+  }
+  .job ul { margin: 0; padding-left: 18px; }
+  .job li { margin-bottom: 7px; color: var(--dim); font-size: 14px; max-width: 66ch; }
+  .job li::marker { color: var(--faint); }
+
+  /* ---------- projects ---------- */
+
+  .grid {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  }
+  .card {
+    border: 1px solid var(--line); border-radius: 8px;
+    background: var(--panel); padding: 18px 18px 16px;
+    display: flex; flex-direction: column;
+    transition: border-color .15s, transform .15s;
+  }
+  .card:hover { border-color: var(--green); transform: translateY(-2px); }
+  .card h3 { margin: 0 0 3px; font-size: 14.5px; font-weight: 600; color: #e6edf3; }
+  .card h3 a { color: #e6edf3; }
+  .card h3 a:hover { color: var(--green); text-decoration: none; }
+  .card h3 a::after { content: " \2197"; color: var(--faint); font-size: 12px; }
+  .card .stack { color: var(--soil); font-size: 12px; margin-bottom: 10px; }
+  .card p { font-size: 13.5px; color: var(--dim); margin: 0; line-height: 1.6; max-width: none; }
+  .card .foot {
+    margin-top: auto; padding-top: 14px;
+    color: var(--faint); font-size: 11.5px;
+    text-transform: uppercase; letter-spacing: .7px;
+  }
+
+  /* ---------- toolbox ---------- */
+
+  .tools { display: grid; gap: 12px; }
+  .tools > div {
+    display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 14px;
+    align-items: baseline;
+  }
+  .tools .k {
+    color: var(--green); font-size: 13px; letter-spacing: .4px;
+  }
+  .tools .v {
+    color: var(--dim); font-size: 13.5px; line-height: 1.75;
+    min-width: 0; overflow-wrap: anywhere;
+  }
+  .tools .v i { color: var(--faint); font-style: normal; padding: 0 5px; }
+
+  /* ---------- contact ---------- */
+
+  .contact-lines { margin-bottom: 26px; }
+  .contact-lines div { margin-bottom: 6px; font-size: 14px; }
+  .contact-lines .k { color: var(--faint); display: inline-block; min-width: 92px; }
+
+  /* ---------- footer ---------- */
+
+  footer {
+    margin-top: 80px; padding: 30px 0 48px;
+    border-top: 1px solid var(--line-2);
+  }
+  .art {
+    display: flex; gap: 34px; align-items: center; flex-wrap: wrap;
+    font-size: 12px; line-height: 1.45; margin-bottom: 24px;
+  }
+  .art pre { margin: 0; color: var(--soil); opacity: .7; }
+  .art q { color: var(--dim); font-style: italic; max-width: 30ch; }
+  .colophon { color: var(--faint); font-size: 12px; }
+
+  @media (max-width: 600px) {
+    header { padding-top: 48px; }
+    section { padding-top: 46px; }
+    nav .wrap { height: auto; padding-top: 10px; padding-bottom: 10px; }
+    nav ul { margin-left: 0; width: 100%; gap: 16px; }
+    .tools > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+    .art { gap: 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="brand"><b>azam</b>@<i>santacruz</i>:~$</span>
+    <ul>
+      <li><a href="#about">about</a></li>
+      <li><a href="#work">work</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#toolbox">toolbox</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header>
+    <h1>Azam Mohamed<span class="cursor"></span></h1>
+    <p class="role">computer engineer &nbsp;&middot;&nbsp; santa cruz, ca</p>
+
+    <p class="lede">
+      I build things close to the metal: operating system internals, embedded
+      firmware, and silicon.
+    </p>
+    <p class="sub">
+      B.S. Computer Engineering at UC Santa Cruz, finished in three years
+      (Sep 2023 to Aug 2026), with minors in Electrical Engineering and
+      Computer Science.
+    </p>
+
+    <div class="links">
+      <a href="https://github.com/Azzu-bear">github</a>
+      <a href="https://www.linkedin.com/in/azam-mohamed-718780295/">linkedin</a>
+      <a href="mailto:azamoham@ucsc.edu">azamoham@ucsc.edu</a>
+    </div>
+
+    <div class="term">
+      <div class="term-bar">
+        <span class="dot" style="background:#ff5f57"></span>
+        <span class="dot" style="background:#febc2e"></span>
+        <span class="dot" style="background:#28c840"></span>
+        <span class="term-title">ents &mdash; the path a soil reading takes</span>
+      </div>
+      <div class="term-body">
+        <svg viewBox="0 0 660 132" xmlns="http://www.w3.org/2000/svg"
+             role="img" aria-label="Signal path: a soil sensor sends a reading over i2c to an stm32 running Tock OS, over uart to an esp32 that writes to microSD, over lora to a gateway at the farm, and finally over http to the DirtViz dashboard.">
+          <style>
+            @keyframes travel {
+              0%   { transform: translateX(0);     opacity: 0 }
+              5%   { opacity: 1 }
+              93%  { opacity: 1 }
+              100% { transform: translateX(520px); opacity: 0 }
+            }
+            @keyframes lit {
+              0%, 100% { fill: #6e7681 }
+              9%       { fill: #3fb950 }
+              26%      { fill: #6e7681 }
+            }
+            .pkt { animation: travel 5s linear infinite; }
+            .hop { animation: lit 5s linear infinite; }
+            .d2 { animation-delay: 1s }
+            .d3 { animation-delay: 2s }
+            .d4 { animation-delay: 3s }
+            .d5 { animation-delay: 4s }
+            .lbl  { font: 600 11px ui-monospace, Consolas, monospace; fill: #c9d1d9 }
+            .sml  { font: 400 9px  ui-monospace, Consolas, monospace; fill: #6e7681 }
+            .wire { font: 400 9px  ui-monospace, Consolas, monospace; fill: #d29922 }
+            @media (prefers-reduced-motion: reduce) {
+              .pkt, .hop { animation: none }
+              .hop { fill: #3fb950 }
+            }
+          </style>
+
+          <line x1="70" y1="58" x2="590" y2="58" stroke="#30363d" stroke-width="1"/>
+
+          <circle class="hop"    cx="70"  cy="58" r="6" fill="#6e7681"/>
+          <circle class="hop d2" cx="200" cy="58" r="6" fill="#6e7681"/>
+          <circle class="hop d3" cx="330" cy="58" r="6" fill="#6e7681"/>
+          <circle class="hop d4" cx="460" cy="58" r="6" fill="#6e7681"/>
+          <circle class="hop d5" cx="590" cy="58" r="6" fill="#6e7681"/>
+
+          <g class="pkt">
+            <rect x="66" y="54" width="8" height="8" rx="1.5" fill="#3fb950"/>
+          </g>
+
+          <text class="wire" x="135" y="50" text-anchor="middle">i2c</text>
+          <text class="wire" x="265" y="50" text-anchor="middle">uart</text>
+          <text class="wire" x="395" y="50" text-anchor="middle">lora</text>
+          <text class="wire" x="525" y="50" text-anchor="middle">http</text>
+
+          <text class="lbl" x="70"  y="84" text-anchor="middle">sensor</text>
+          <text class="sml" x="70"  y="97" text-anchor="middle">soil</text>
+
+          <text class="lbl" x="200" y="84" text-anchor="middle">stm32</text>
+          <text class="sml" x="200" y="97" text-anchor="middle">tock os</text>
+
+          <text class="lbl" x="330" y="84" text-anchor="middle">esp32</text>
+          <text class="sml" x="330" y="97" text-anchor="middle">microsd</text>
+
+          <text class="lbl" x="460" y="84" text-anchor="middle">gateway</text>
+          <text class="sml" x="460" y="97" text-anchor="middle">the farm</text>
+
+          <text class="lbl" x="590" y="84" text-anchor="middle">dirtviz</text>
+          <text class="sml" x="590" y="97" text-anchor="middle">dashboard</text>
+
+          <text class="sml" x="330" y="122" text-anchor="middle" fill="#8b949e">
+            my job is finding the hop where the reading stops being true
+          </text>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <h2>cat about.txt</h2>
+    <div class="rule"></div>
+    <p>
+      Most of what I enjoy sits at a boundary: where a sensor reading becomes a
+      packet, where C becomes a scheduling decision, where Verilog becomes a
+      tile on a die. The interesting failures live there too, which is usually
+      what pulls me in.
+    </p>
+    <p>
+      Right now that means field reliability for solar powered soil sensing
+      nodes at the UC Santa Cruz farm, a compute cluster for research
+      workloads, and a 2x2 matrix solver I taped out on SKY130. Before that it
+      was kernel threading in Pintos, a VGA game with no framebuffer, and a
+      competition robot that only started working the week it had to.
+    </p>
+    <p class="note">
+      Away from a terminal: cricket, table tennis, beach volleyball, and
+      cooking for more people than I planned for.
+    </p>
+  </section>
+
+  <section id="work">
+    <h2>ls -lt work/</h2>
+    <div class="rule"></div>
+
+    <div class="job">
+      <h3>Undergraduate Researcher <span class="where">&middot; UC Santa Cruz jLab (Josephson Lab), ENTS</span></h3>
+      <div class="when">Jul 2026 &ndash; present</div>
+      <ul>
+        <li>Trace the full ENTS data path, firmware through transport to the DirtViz dashboard, to locate where field readings are lost or silently corrupted before display.</li>
+        <li>Decode nanopb Protocol Buffer telemetry to verify packets survive transport intact, isolating failures to a specific stage rather than the pipeline at large.</li>
+        <li>Build a repeatable validation procedure so any lab member can certify a node's data end to end, replacing ad hoc spot checks that let failures reach production dashboards.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <h3>Undergraduate Researcher <span class="where">&middot; PICO compute cluster, under Prof. Abel Souza</span></h3>
+      <div class="when">Jun 2026 &ndash; present &middot; independent study</div>
+      <ul>
+        <li>Configuring and testing the department's PICO compute cluster for Kubernetes research workloads.</li>
+        <li>Evaluating Incus system containers and VMs on Linux to build reproducible, isolated experiment environments, prototyping container and VM provisioning workflows.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <h3>Rides Operator <span class="where">&middot; Santa Cruz Beach Boardwalk</span></h3>
+      <div class="when">Feb 2026 &ndash; Jun 2026</div>
+      <ul>
+        <li>Ran mechanical systems and enforced safety protocol for 100+ guests a day, which is a fairly direct education in fault detection when the safety critical system is standing right in front of you.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>ls projects/</h2>
+    <div class="rule"></div>
+
+    <div class="grid">
+
+      <div class="card">
+        <h3><a href="https://github.com/Azzu-bear/TinyTapeout_sky_MatrixInversion">Matrix Inversion ASIC</a></h3>
+        <div class="stack">verilog &middot; cocotb &middot; openlane &middot; sky130</div>
+        <p>
+          A 2x2 linear system solver (Ax=b, Q4.4 fixed point) taped out through
+          TinyTapeout. One shared multiplier and a 12 state FSM fit into a 1x1
+          tile at 50 MHz. Verified in cocotb at RTL and gate level, then
+          hardened to GDS with OpenLane.
+        </p>
+        <div class="foot">silicon</div>
+      </div>
+
+      <div class="card">
+        <h3><a href="https://github.com/Azzu-bear/project4-pintos-threads">Pintos Kernel Scheduler</a></h3>
+        <div class="stack">c &middot; os internals &middot; thread scheduling</div>
+        <p>
+          Replaced busy waiting in the Pintos kernel with an ordered sleep list
+          and timed wakeups driven from the 8254 timer ISR. Interrupts disabled
+          around insertion so the list is never edited out from under the
+          handler. All six alarm tests pass under QEMU.
+        </p>
+        <div class="foot">kernel</div>
+      </div>
+
+      <div class="card">
+        <h3><a href="https://github.com/Azzu-bear/sluggers-of-the-lost-goal">Sluggers of the Lost Goal</a></h3>
+        <div class="stack">embedded c &middot; esp-idf &middot; uart &middot; hsm</div>
+        <p>
+          Autonomous ball shooting robot, five weeks and a $200 budget. A PIC32
+          runs the hierarchical state machines; an ESP32-C3 fans eight VL53L1X
+          time of flight sensors out behind an I2C mux. It shipped with a fixed
+          flywheel speed instead of live ranging, because one bad return in the
+          seconds before a shot cost more than the adaptivity was worth.
+        </p>
+        <div class="foot">robotics</div>
+      </div>
+
+      <div class="card">
+        <h3><a href="https://github.com/Azzu-bear/fpga-vga-arcade">FPGA VGA Arcade Game</a></h3>
+        <div class="stack">verilog &middot; vivado &middot; basys3</div>
+        <p>
+          A three lane endless runner drawn live to a VGA monitor. No
+          framebuffer: a Basys3 cannot hold a 640x480 frame and there is no
+          time to read one at 40 ns per pixel, so every object answers "is this
+          pixel inside me?" combinationally from the beam position.
+        </p>
+        <div class="foot">fpga</div>
+      </div>
+
+      <div class="card">
+        <h3><a href="https://github.com/jlab-sensing/ENTS-tock">ENTS-tock</a></h3>
+        <div class="stack">tock os &middot; i2c &middot; protobuf</div>
+        <p>
+          Lab firmware I contribute to. Routed STM32 microlog output over I2C
+          to an ESP32 so it lands on a microSD card, which meant extending the
+          protobuf schema without growing the RAM footprint.
+        </p>
+        <div class="foot">firmware &middot; upstream</div>
+      </div>
+
+      <div class="card">
+        <h3><a href="https://github.com/Azzu-bear/cse121-labs">Embedded C on ESP32-C3</a></h3>
+        <div class="stack">c &middot; esp-idf &middot; i2c &middot; ble</div>
+        <p>
+          I2C sensor bring up, BLE HID, and RTOS tasks. The lab work that made
+          most of the rest of this page possible, kept around because bring up
+          notes are worth more later than they look at the time.
+        </p>
+        <div class="foot">embedded</div>
+      </div>
+
+      <div class="card">
+        <h3>Thread-Safe Binary Search Tree</h3>
+        <div class="stack">c &middot; pthreads &middot; valgrind</div>
+        <p>
+          A concurrent BST using fine grained mutex locking to support insert,
+          search, and delete across many threads. Hardened against races and
+          leaks with Valgrind under sustained contention until the runs came
+          back clean.
+        </p>
+        <div class="foot">concurrency</div>
+      </div>
+
+      <div class="card">
+        <h3>Multi-Client TCP Chat Server</h3>
+        <div class="stack">c &middot; posix sockets &middot; select()</div>
+        <p>
+          A chat server built on select() based I/O multiplexing, serving many
+          clients concurrently on a single thread and handling connects,
+          disconnects, broadcast, and clean session teardown without disrupting
+          anyone else on the server.
+        </p>
+        <div class="foot">networking</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="toolbox">
+    <h2>which -a</h2>
+    <div class="rule"></div>
+
+    <div class="tools">
+      <div>
+        <span class="k">languages</span>
+        <span class="v">C<i>&middot;</i>C++<i>&middot;</i>Python<i>&middot;</i>Verilog<i>&middot;</i>Assembly (x86 / RISC-V)<i>&middot;</i>MATLAB</span>
+      </div>
+      <div>
+        <span class="k">systems</span>
+        <span class="v">Linux<i>&middot;</i>OS internals<i>&middot;</i>concurrency<i>&middot;</i>pthreads<i>&middot;</i>sockets<i>&middot;</i>select() multiplexing<i>&middot;</i>memory management</span>
+      </div>
+      <div>
+        <span class="k">embedded</span>
+        <span class="v">Tock OS<i>&middot;</i>ESP-IDF<i>&middot;</i>FreeRTOS<i>&middot;</i>STM32<i>&middot;</i>ESP32<i>&middot;</i>PIC32<i>&middot;</i>I2C<i>&middot;</i>SPI<i>&middot;</i>UART<i>&middot;</i>PWM<i>&middot;</i>BLE</span>
+      </div>
+      <div>
+        <span class="k">silicon</span>
+        <span class="v">SKY130<i>&middot;</i>OpenLane<i>&middot;</i>cocotb<i>&middot;</i>Vivado<i>&middot;</i>Basys3</span>
+      </div>
+      <div>
+        <span class="k">tools</span>
+        <span class="v">git<i>&middot;</i>gdb<i>&middot;</i>valgrind<i>&middot;</i>docker<i>&middot;</i>kubernetes<i>&middot;</i>incus<i>&middot;</i>wsl<i>&middot;</i>ssh<i>&middot;</i>neovim<i>&middot;</i>tmux</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>whois azam</h2>
+    <div class="rule"></div>
+
+    <div class="contact-lines">
+      <div><span class="k">email</span> <a href="mailto:azamoham@ucsc.edu">azamoham@ucsc.edu</a></div>
+      <div><span class="k">github</span> <a href="https://github.com/Azzu-bear">github.com/Azzu-bear</a></div>
+      <div><span class="k">linkedin</span> <a href="https://www.linkedin.com/in/azam-mohamed-718780295/">azam-mohamed-718780295</a></div>
+      <div><span class="k">located</span> <span class="note">Santa Cruz, CA</span></div>
+    </div>
+
+    <p class="note">
+      Open to new grad roles in systems, embedded, and hardware. If you have
+      something running close to the metal and it is behaving strangely, that
+      is the kind of message I answer fastest.
+    </p>
+  </section>
+
+  <footer>
+    <div class="art">
+<pre>    .  .  .
+ .           .
+   .  ~~~~~~~   .
+  .  ~ soil  ~   .
+   .  ~~~~~~~   .
+ .           .
+    '  '  '</pre>
+      <q>"the node is in the dirt, the data had better be real"</q>
+    </div>
+    <div class="colophon">
+      hand written html and css, no build step. hosted on github pages.
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
