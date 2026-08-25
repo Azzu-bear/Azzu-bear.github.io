@@ -257,6 +257,41 @@
   }
   .stackgrid .v i { color: var(--faint); font-style: normal; padding: 0 7px; }
 
+  /* ---------- resume: the document, shown as a plate ---------- */
+  .doc {
+    display: grid; grid-template-columns: 300px minmax(0,1fr);
+    gap: 34px; align-items: start; margin-top: 26px;
+  }
+  .doc .sheetimg {
+    border: 1px solid var(--rule); border-radius: 2px;
+    display: block; width: 100%; height: auto; background: #fff;
+  }
+  .doc a.sheetlink { display: block; }
+  .doc a.sheetlink:hover .sheetimg { border-color: var(--amber); }
+  .doc h3 {
+    font-size: 19px; font-weight: 600; color: var(--text);
+    margin: 0 0 6px; letter-spacing: -.016em;
+  }
+  .doc .meta { margin: 0 0 18px; }
+  .doc p { font-size: 15.5px; color: var(--dim); margin: 0 0 22px; max-width: 56ch; }
+  .doc .props { border-top: 1px solid var(--rule-2); margin-bottom: 24px; }
+  .doc .props > div {
+    display: grid; grid-template-columns: 120px minmax(0,1fr);
+    gap: 20px; padding: 9px 0; border-bottom: 1px solid var(--rule-2);
+  }
+  .doc .props .v { font-size: 14.5px; color: var(--body); }
+  .btnrow { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
+    text-transform: uppercase; text-decoration: none;
+    border: 1px solid var(--rule); border-radius: 2px;
+    padding: 10px 18px; color: var(--body); background: var(--raise);
+    transition: border-color .15s, color .15s;
+  }
+  .btn:hover { border-color: var(--amber); color: var(--amber); text-decoration: none; }
+  .btn.solid { border-color: var(--amber); color: var(--amber); }
+  .btn.solid:hover { background: #1b1a15; }
+
   /* ---------- contact ---------- */
   .contact { margin-top: 4px; }
   .contact > div {
@@ -278,6 +313,8 @@
     .row .side .note { display: inline; }
     .row .side .src { display: inline; margin-left: 14px; }
     .entry { grid-template-columns: minmax(0,1fr); gap: 8px; }
+    .doc { grid-template-columns: minmax(0,1fr); gap: 26px; }
+    .doc .sheetlink { max-width: 260px; }
   }
   @media (max-width: 560px) {
     header { padding-top: 40px; }
@@ -288,6 +325,7 @@
     nav ul::-webkit-scrollbar { display: none; }
     nav ul li { flex: none; }
     .spec > div, .stackgrid > div, .contact > div { grid-template-columns: minmax(0,1fr); gap: 3px; }
+    .doc .props > div { grid-template-columns: minmax(0,1fr); gap: 3px; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
@@ -305,6 +343,7 @@
       <li><a href="#log">Log</a></li>
       <li><a href="#notes">Notes</a></li>
       <li><a href="#stack">Stack</a></li>
+      <li><a href="#resume">Resume</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -367,6 +406,10 @@
       <div>
         <span class="lab">Status</span>
         <span class="val"><span class="ok">Open</span> to new grad roles in systems, embedded, and hardware</span>
+      </div>
+      <div>
+        <span class="lab">Resume</span>
+        <span class="val"><a href="Azam_Mohamed_Resume.pdf">Azam_Mohamed_Resume.pdf</a>, one page</span>
       </div>
     </div>
 
@@ -676,9 +719,60 @@
     </div>
   </section>
 
-  <section id="contact">
+  <section id="resume">
     <div class="shead">
       <span class="n">5</span>
+      <h2>Resume</h2>
+      <span class="rule"></span>
+      <span class="count">PDF &middot; 1 page</span>
+    </div>
+
+    <div class="doc">
+      <a class="sheetlink" href="Azam_Mohamed_Resume.pdf">
+        <picture>
+          <source type="image/webp"
+                  srcset="assets/resume-page.webp 1x, assets/resume-page@2x.webp 2x">
+          <img class="sheetimg" src="assets/resume-page.jpg"
+               srcset="assets/resume-page.jpg 1x, assets/resume-page@2x.jpg 2x"
+               alt="First page of Azam Mohamed's resume"
+               width="300" height="388" decoding="async">
+        </picture>
+      </a>
+
+      <div>
+        <h3>Azam Mohamed &mdash; Resume</h3>
+        <span class="lab meta amber">Software and systems</span>
+        <p>
+          The same document I send to employers, with education, the two
+          research roles, and five projects written out at length.
+        </p>
+
+        <div class="props">
+          <div>
+            <span class="lab">File</span>
+            <span class="v">Azam_Mohamed_Resume.pdf</span>
+          </div>
+          <div>
+            <span class="lab">Length</span>
+            <span class="v">1 page</span>
+          </div>
+          <div>
+            <span class="lab">Updated</span>
+            <span class="v">August 2026</span>
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <a class="btn solid" href="Azam_Mohamed_Resume.pdf">View</a>
+          <a class="btn" href="Azam_Mohamed_Resume.pdf" download>Download</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="shead">
+      <span class="n">6</span>
       <h2>Contact</h2>
       <span class="rule"></span>
     </div>
