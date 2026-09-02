@@ -220,6 +220,7 @@
   .f6 { background: linear-gradient(140deg, #4a2020, #1d0d0d); }
   .f7 { background: linear-gradient(140deg, #123f42, #08191b); }
   .f8 { background: linear-gradient(140deg, #3a1f3f, #170d19); }
+.f9 { background: linear-gradient(140deg, #1c3a2e, #0b1a15); }
 
   .frame-body { padding: 15px 16px 17px; display: flex; flex-direction: column; flex: 1; }
   .frame-body h3 {
@@ -474,7 +475,7 @@
       <span class="n">1</span>
       <h2>Projects</h2>
       <span class="rule"></span>
-      <span class="count">8 frames &middot; scroll &rarr;</span>
+      <span class="count">9 frames &middot; scroll &rarr;</span>
     </div>
 
     <div class="sheet">
@@ -611,6 +612,23 @@
           <div class="foot">
             <span class="lab">Bring up</span>
             <span class="lab src">Source</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="frame-card" href="https://devpost.com/software/gatherer-0lu4fn">
+        <div class="sprocket">
+          <span class="lab">1.09</span>
+          <span class="lab amber">Hackathon</span>
+        </div>
+        <div class="field f9 fig-bg"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><marker id="ar9" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 z" fill="#d29922"/></marker></defs><circle cx="34" cy="38" r="4" fill="#5f5f5a"/><circle cx="34" cy="60" r="4" fill="#5f5f5a"/><circle cx="34" cy="82" r="4" fill="#5f5f5a"/><circle cx="34" cy="104" r="4" fill="#5f5f5a"/><text x="24" y="26" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#85857f">sources</text><path d="M40 38 L104 68" stroke="#5f5f5a"/><path d="M40 60 L104 70" stroke="#5f5f5a"/><path d="M40 82 L104 74" stroke="#5f5f5a"/><path d="M40 104 L104 78" stroke="#5f5f5a"/><rect x="108" y="54" width="70" height="38" fill="#141517"/><rect x="108" y="54" width="70" height="38" fill="#3fb950" opacity=".10"/><rect x="108" y="54" width="70" height="38" fill="none" stroke="#3fb950" stroke-width="1.5"/><text x="143" y="70" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#3fb950">ollama</text><text x="143" y="83" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7" fill="#3fb950">local</text><path d="M180 73 L204 73" stroke="#d29922" stroke-width="1.5" marker-end="url(#ar9)"/><rect x="212" y="48" width="46" height="11" fill="#3fb950" opacity=".75"/><rect x="212" y="65" width="30" height="11" fill="#5f5f5a" opacity=".6"/><rect x="212" y="82" width="38" height="11" fill="#d29922" opacity=".7"/><text x="256" y="108" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#85857f">+ / -</text></svg><span class="tag">Hackathon</span></div>
+        <div class="frame-body">
+          <h3>AutoSentiment</h3>
+          <span class="lab stack">Python &middot; TypeScript &middot; SQLite &middot; Ollama</span>
+          <p>NVIDIA x ASUS hackathon, four of us. Public sentiment aggregated from scraped news and social sources, every model call served locally by Ollama. We scripted job orchestration in the shell to keep extraction running unattended overnight across rate limited backends.</p>
+          <div class="foot">
+            <span class="lab">Local inference</span>
+            <span class="lab src">Devpost</span>
           </div>
         </div>
       </a>
