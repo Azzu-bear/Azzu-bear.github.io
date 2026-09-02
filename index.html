@@ -275,12 +275,6 @@
   }
   .doc .meta { margin: 0 0 18px; }
   .doc p { font-size: 15.5px; color: var(--dim); margin: 0 0 22px; max-width: 56ch; }
-  .doc .props { border-top: 1px solid var(--rule-2); margin-bottom: 24px; }
-  .doc .props > div {
-    display: grid; grid-template-columns: 120px minmax(0,1fr);
-    gap: 20px; padding: 9px 0; border-bottom: 1px solid var(--rule-2);
-  }
-  .doc .props .v { font-size: 14.5px; color: var(--body); }
   .btnrow { display: flex; gap: 10px; flex-wrap: wrap; }
   .btn {
     font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
@@ -326,7 +320,6 @@
     nav ul::-webkit-scrollbar { display: none; }
     nav ul li { flex: none; }
     .spec > div, .stackgrid > div, .contact > div { grid-template-columns: minmax(0,1fr); gap: 3px; }
-    .doc .props > div { grid-template-columns: minmax(0,1fr); gap: 3px; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
@@ -764,21 +757,6 @@
           The same document I send to employers: education, the research
           and cluster roles, and four projects written out at length.
         </p>
-
-        <div class="props">
-          <div>
-            <span class="lab">File</span>
-            <span class="v">Azam_Mohamed_Resume.pdf</span>
-          </div>
-          <div>
-            <span class="lab">Length</span>
-            <span class="v">1 page</span>
-          </div>
-          <div>
-            <span class="lab">Updated</span>
-            <span class="v">September 2026</span>
-          </div>
-        </div>
 
         <div class="btnrow">
           <a class="btn solid" href="Azam_Mohamed_Resume.pdf">View</a>
