@@ -269,6 +269,30 @@
   }
   .doc a.sheetlink { display: block; }
   .doc a.sheetlink:hover .sheetimg { border-color: var(--amber); }
+  .doc .plate { max-width: 300px; }
+  .doc a.sheetlink { position: relative; overflow: hidden; border-radius: 2px; }
+  .doc .beam {
+    position: absolute; left: 0; right: 0; top: -64px; height: 64px;
+    pointer-events: none; opacity: 0;
+    background: linear-gradient(to bottom, transparent,
+                rgba(210,153,34,.10) 78%, rgba(210,153,34,.16));
+    border-bottom: 1px solid var(--amber);
+    box-shadow: 0 1px 10px rgba(210,153,34,.45);
+    animation: scan 4.6s cubic-bezier(.4,0,.5,1) infinite;
+  }
+  .doc a.sheetlink:hover .beam { animation-duration: 2.3s; }
+  @keyframes scan {
+    0%        { top: -64px; opacity: 0; }
+    8%        { opacity: 1; }
+    62%       { top: 100%;  opacity: 1; }
+    70%, 100% { top: 100%;  opacity: 0; }
+  }
+  .doc .strip {
+    display: flex; justify-content: space-between; gap: 10px;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--faint); padding-top: 9px;
+  }
+  .doc .strip .on { color: var(--amber); }
   .doc h3 {
     font-size: 19px; font-weight: 600; color: var(--text);
     margin: 0 0 6px; letter-spacing: -.016em;
@@ -309,7 +333,7 @@
     .row .side .src { display: inline; margin-left: 14px; }
     .entry { grid-template-columns: minmax(0,1fr); gap: 8px; }
     .doc { grid-template-columns: minmax(0,1fr); gap: 26px; }
-    .doc .sheetlink { max-width: 260px; }
+    .doc .plate { max-width: 260px; }
   }
   @media (max-width: 560px) {
     header { padding-top: 40px; }
@@ -739,6 +763,7 @@
     </div>
 
     <div class="doc">
+      <div class="plate">
       <a class="sheetlink" href="Azam_Mohamed_Resume.pdf">
         <picture>
           <source type="image/webp"
@@ -748,7 +773,10 @@
                alt="First page of Azam Mohamed's resume"
                width="300" height="388" decoding="async">
         </picture>
+        <i class="beam"></i>
       </a>
+      <div class="strip"><span>Scan</span><span class="on">&#9679; Reading</span><span>1 / 1</span></div>
+      </div>
 
       <div>
         <h3>Azam Mohamed &mdash; Resume</h3>
