@@ -20,28 +20,29 @@ per section, pill buttons, generous whitespace, and a single blue accent.
 It follows the system light or dark setting.
 
 Figures sit on dark tiles in both themes, the way product shots do. The hero
-tile is the ENTS data path with a packet travelling the hops. The projects are
-a horizontal snap gallery; eight of the nine tiles are inline SVG drawings of
-the actual mechanism and the ninth is a photograph of the Sluggers chassis.
+tile is the ENTS data path with a packet travelling the hops. Projects are a
+static two by two grid of the top four; the other five sit in a second grid
+behind the "Show all nine" button. Eight of the nine tiles are inline SVG
+drawings of the actual mechanism and the ninth is a photograph of the Sluggers
+chassis.
 
 ## Motion
 
-- `.reveal` fades and lifts an element in when it scrolls into view. Stagger
-  siblings with `style="--d:80ms"`.
-- `.pop` is the larger scale-up used on the hero tile.
+Motion is kept quick so a fast scroll never lands on a blank section.
+
+- `.reveal` fades an element in over 0.4s, starting just before it enters the
+  viewport. Stagger siblings with `style="--d:80ms"` (scaled down in CSS).
+- `.pop` is the slightly larger version used on the hero tile.
+- Headlines are split into words by script and arrive in sequence.
 - The nav highlights the section in view and carries a scroll progress line.
-- The gallery has previous and next buttons, dots, and arrow key support.
-- Headlines are split into words by script and arrive out of a blur.
 - Hero: drifting aurora, a colour ring on the portrait, a metal sheen on the
   tagline (`.metal`). `.grad` is the moving gradient headline.
 - Cards and panels have a cursor spotlight; project cards tilt toward it.
-- Scroll-linked pieces (hero fade, stage grow, gallery card scale, resume
-  swing, the approach text lighting up) use CSS `animation-timeline`. They sit
-  inside `@supports`, so browsers without it fall back to the plain reveals.
+- Two scroll-linked pieces (the stage growing into place and the resume page
+  swinging flat) use CSS `animation-timeline` inside `@supports`.
 
-All of it is switched off under `prefers-reduced-motion`, and the page reads
-fine with JavaScript disabled apart from the reveals, so keep content out of
-script.
+All of it is switched off under `prefers-reduced-motion`, and without
+JavaScript every element is simply visible, with all nine projects shown.
 
 ## Editing
 
@@ -53,13 +54,15 @@ python -m http.server 8787
 
 Sections are `<section id="...">`: `work`, `projects`, `approach`, `stack`,
 `resume`, `contact`. The nav links to those ids, so a new section needs both
-the `<section>` and an `<li>`.
+the `<section>` and an `<li>`. Give the `<li>` `class="opt"` to hide it at
+phone width, where only Projects, Resume and Contact are shown.
 
-To add a project, copy a `.card` block inside `#rail`. Cards with a link use
-`<a class="card" href="...">`; cards without one use `<div class="card">` and
-mark the footer `<span class="src off">No repo</span>`. Tile art goes in the
-`.tile` div: an inline `<svg viewBox="0 0 290 150">` or a `<picture>`. The
-gallery dots are generated from the rail width, so nothing else needs updating.
+To add a project, copy a `.card` block into `.grid.top` (the four always
+shown) or `.grid.more`. Cards with a link use `<a class="card" href="...">`;
+cards without one use `<div class="card">` and leave the right side of the
+footer empty. Tile art goes in the `.tile` div: an inline
+`<svg viewBox="0 0 290 150">` or a `<picture>`. If the total changes, update
+the button label in the script and the section headline.
 
 ## Palette
 
