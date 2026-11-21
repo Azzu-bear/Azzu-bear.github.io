@@ -663,31 +663,64 @@ header { position: relative; isolation: isolate; }
 .stage > * { position: relative; }
 @keyframes orbit { to { --ang: 360deg; } }
 
-/* ---------- projects grid ---------- */
-.grid { display: grid; gap: 20px; }
-.grid.top  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.grid.more { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 20px; }
-.js .grid.more:not(.open) { display: none; }
+/* ---------- projects shelf: one row, pages sideways ---------- */
+.shelf {
+  position: relative;
+  /* where the page content starts, so the first card lines up with the headline */
+  --edge: max(var(--gut), calc(50vw - 520px + var(--gut)));
+  /* three across the content width, with a slice of the fourth showing */
+  --cw: clamp(236px, calc((min(100vw, 1040px) - 144px) / 3), 320px);
+}
+.rail {
+  position: relative;
+  display: flex; gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 14px var(--edge) 30px;
+  scroll-padding-inline: var(--edge);
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail .card {
+  flex: 0 0 var(--cw);
+  scroll-snap-align: start;
+}
 
-.grid.top .card-body { padding: 26px 28px 28px; gap: 11px; }
-.grid.top h3 { font-size: 24px; letter-spacing: -.024em; }
-.grid.top .card-body p { font-size: 16px; line-height: 1.52; }
-.grid.top .card-foot { font-size: 13.5px; }
+.arrow {
+  position: absolute; top: calc(14px + var(--cw) * .2586); z-index: 3;
+  width: 46px; height: 46px; margin-top: -23px;
+  border-radius: 50%; border: 1px solid var(--line); cursor: pointer;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+          backdrop-filter: saturate(180%) blur(14px);
+  color: var(--ink); font-size: 22px; line-height: 1;
+  display: grid; place-items: center; padding: 0 0 3px;
+  box-shadow: 0 6px 22px rgba(0,0,0,.18);
+  transition: opacity .25s var(--ease), transform .25s var(--ease), background .25s var(--ease);
+}
+.arrow.prev { left:  max(8px, calc(var(--edge) - 23px)); }
+.arrow.next { right: max(8px, calc(var(--edge) - 23px)); }
+.arrow:hover { transform: scale(1.08); background: var(--surface); }
+.arrow:active { transform: scale(.95); }
+.arrow:disabled { opacity: 0; pointer-events: none; }
+html:not(.js) .arrow { display: none; }
 
-.more-row { display: flex; justify-content: center; margin-top: 34px; }
-html:not(.js) .more-row { display: none; }
+.count {
+  text-align: center; margin: 2px 0 0;
+  font-size: 13.5px; font-weight: 500; color: var(--dim);
+  font-variant-numeric: tabular-nums;
+}
 
-@media (max-width: 900px) { .grid.more { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 620px) {
-  .grid.top, .grid.more { grid-template-columns: minmax(0, 1fr); }
-  .grid.top h3 { font-size: 21px; }
-  .grid.top .card-body { padding: 20px 21px 22px; }
-  .grid.top .card-body p { font-size: 15px; }
+  .shelf { --cw: min(84vw, 320px); }
+  .arrow { display: none; }
   nav li.opt { display: none; }
   nav .wrap { gap: 10px; padding: 0 16px; }
   nav ul { gap: 0; }
   nav ul a { padding: 6px 8px; }
 }
+@media (prefers-reduced-motion: reduce) { .rail { scroll-behavior: auto; } }
 
 /* ---------- status badges: full-strength ink, solid ground ---------- */
 .pill {
@@ -712,12 +745,12 @@ html:not(.js) .more-row { display: none; }
 }
 
 /* ---------- project cards tilt toward the cursor ---------- */
-.card.in {
+.rail .card {
   transform: perspective(900px)
              rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
              translateY(var(--lift, 0px));
 }
-a.card.in:hover {
+.rail a.card:hover {
   --lift: -6px;
   transform: perspective(900px)
              rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
@@ -967,108 +1000,106 @@ a.card.in:hover {
     </div>
   </div>
 
+  <div class="shelf reveal">
+    <button class="arrow prev" id="prev" type="button" aria-label="Previous projects">&lsaquo;</button>
+    <div class="rail" id="rail" tabindex="0" aria-label="Projects, scroll sideways">
+
+    <a class="card" href="https://github.com/Azzu-bear/sluggers-of-the-lost-goal">
+      <div class="tile"><picture><source type="image/webp" srcset="assets/proj-robot.webp 1x, assets/proj-robot@2x.webp 2x"><img src="assets/proj-robot.jpg" srcset="assets/proj-robot.jpg 1x, assets/proj-robot@2x.jpg 2x" alt="Top-down view of the Sluggers robot chassis: plywood deck, motors, protoboard and wiring" width="290" height="150" decoding="async"></picture><span class="badge">Robot</span></div>
+      <div class="card-body">
+        <h3>Sluggers of the Lost Goal</h3>
+        <span class="stack">Embedded C &middot; ESP-IDF &middot; HSM</span>
+        <p>Five weeks, $200. A PIC32 runs the state machines; an ESP32-C3 fans eight VL53L1X time of flight sensors out behind an I2C mux, streaming sweeps over UART. I owned the microcontroller subsystem, drove the brushless motor controllers, and designed the analog beacon detection circuit.</p>
+        <div class="card-foot"><span>Competition</span><span class="src">Source &rsaquo;</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/Azzu-bear/TinyTapeout_sky_MatrixInversion">
+      <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="26" y="20" width="238" height="110" fill="none" stroke="#636366"/><rect x="34" y="14" width="7" height="6" fill="#636366"/><rect x="34" y="130" width="7" height="6" fill="#636366"/><rect x="54" y="14" width="7" height="6" fill="#636366"/><rect x="54" y="130" width="7" height="6" fill="#636366"/><rect x="74" y="14" width="7" height="6" fill="#636366"/><rect x="74" y="130" width="7" height="6" fill="#636366"/><rect x="94" y="14" width="7" height="6" fill="#636366"/><rect x="94" y="130" width="7" height="6" fill="#636366"/><rect x="114" y="14" width="7" height="6" fill="#636366"/><rect x="114" y="130" width="7" height="6" fill="#636366"/><rect x="134" y="14" width="7" height="6" fill="#636366"/><rect x="134" y="130" width="7" height="6" fill="#636366"/><rect x="154" y="14" width="7" height="6" fill="#636366"/><rect x="154" y="130" width="7" height="6" fill="#636366"/><rect x="174" y="14" width="7" height="6" fill="#636366"/><rect x="174" y="130" width="7" height="6" fill="#636366"/><rect x="194" y="14" width="7" height="6" fill="#636366"/><rect x="194" y="130" width="7" height="6" fill="#636366"/><rect x="214" y="14" width="7" height="6" fill="#636366"/><rect x="214" y="130" width="7" height="6" fill="#636366"/><rect x="234" y="14" width="7" height="6" fill="#636366"/><rect x="234" y="130" width="7" height="6" fill="#636366"/><rect x="20" y="28" width="6" height="7" fill="#636366"/><rect x="264" y="28" width="6" height="7" fill="#636366"/><rect x="20" y="46" width="6" height="7" fill="#636366"/><rect x="264" y="46" width="6" height="7" fill="#636366"/><rect x="20" y="64" width="6" height="7" fill="#636366"/><rect x="264" y="64" width="6" height="7" fill="#636366"/><rect x="20" y="82" width="6" height="7" fill="#636366"/><rect x="264" y="82" width="6" height="7" fill="#636366"/><rect x="20" y="100" width="6" height="7" fill="#636366"/><rect x="264" y="100" width="6" height="7" fill="#636366"/><rect x="20" y="118" width="6" height="7" fill="#636366"/><rect x="264" y="118" width="6" height="7" fill="#636366"/><rect x="40" y="36" width="9" height="8" fill="#636366" opacity=".55"/><rect x="52" y="36" width="14" height="8" fill="#636366" opacity=".55"/><rect x="69" y="36" width="7" height="8" fill="#636366" opacity=".55"/><rect x="79" y="36" width="11" height="8" fill="#636366" opacity=".55"/><rect x="93" y="36" width="8" height="8" fill="#636366" opacity=".55"/><rect x="104" y="36" width="16" height="8" fill="#636366" opacity=".55"/><rect x="123" y="36" width="10" height="8" fill="#636366" opacity=".55"/><rect x="136" y="36" width="7" height="8" fill="#636366" opacity=".55"/><rect x="146" y="36" width="13" height="8" fill="#636366" opacity=".55"/><rect x="162" y="36" width="9" height="8" fill="#636366" opacity=".55"/><rect x="174" y="36" width="12" height="8" fill="#636366" opacity=".55"/><rect x="189" y="36" width="8" height="8" fill="#636366" opacity=".55"/><rect x="200" y="36" width="15" height="8" fill="#636366" opacity=".55"/><rect x="218" y="36" width="7" height="8" fill="#636366" opacity=".55"/><rect x="228" y="36" width="10" height="8" fill="#636366" opacity=".55"/><rect x="40" y="51" width="8" height="8" fill="#636366" opacity=".55"/><rect x="51" y="51" width="13" height="8" fill="#636366" opacity=".55"/><rect x="67" y="51" width="9" height="8" fill="#636366" opacity=".55"/><rect x="79" y="51" width="14" height="8" fill="#636366" opacity=".55"/><rect x="96" y="51" width="7" height="8" fill="#636366" opacity=".55"/><rect x="106" y="51" width="11" height="8" fill="#636366" opacity=".55"/><rect x="120" y="51" width="8" height="8" fill="#636366" opacity=".55"/><rect x="131" y="51" width="16" height="8" fill="#636366" opacity=".55"/><rect x="216" y="51" width="8" height="8" fill="#636366" opacity=".55"/><rect x="227" y="51" width="15" height="8" fill="#636366" opacity=".55"/><rect x="40" y="66" width="10" height="8" fill="#636366" opacity=".55"/><rect x="53" y="66" width="11" height="8" fill="#636366" opacity=".55"/><rect x="67" y="66" width="8" height="8" fill="#636366" opacity=".55"/><rect x="78" y="66" width="13" height="8" fill="#636366" opacity=".55"/><rect x="94" y="66" width="9" height="8" fill="#636366" opacity=".55"/><rect x="106" y="66" width="14" height="8" fill="#636366" opacity=".55"/><rect x="123" y="66" width="7" height="8" fill="#636366" opacity=".55"/><rect x="133" y="66" width="11" height="8" fill="#636366" opacity=".55"/><rect x="216" y="66" width="9" height="8" fill="#636366" opacity=".55"/><rect x="228" y="66" width="12" height="8" fill="#636366" opacity=".55"/><rect x="40" y="81" width="15" height="8" fill="#636366" opacity=".55"/><rect x="58" y="81" width="7" height="8" fill="#636366" opacity=".55"/><rect x="68" y="81" width="10" height="8" fill="#636366" opacity=".55"/><rect x="81" y="81" width="11" height="8" fill="#636366" opacity=".55"/><rect x="95" y="81" width="8" height="8" fill="#636366" opacity=".55"/><rect x="106" y="81" width="13" height="8" fill="#636366" opacity=".55"/><rect x="122" y="81" width="9" height="8" fill="#636366" opacity=".55"/><rect x="134" y="81" width="14" height="8" fill="#636366" opacity=".55"/><rect x="218" y="81" width="7" height="8" fill="#636366" opacity=".55"/><rect x="228" y="81" width="13" height="8" fill="#636366" opacity=".55"/><rect x="40" y="96" width="12" height="8" fill="#636366" opacity=".55"/><rect x="55" y="96" width="8" height="8" fill="#636366" opacity=".55"/><rect x="66" y="96" width="15" height="8" fill="#636366" opacity=".55"/><rect x="84" y="96" width="7" height="8" fill="#636366" opacity=".55"/><rect x="94" y="96" width="10" height="8" fill="#636366" opacity=".55"/><rect x="107" y="96" width="11" height="8" fill="#636366" opacity=".55"/><rect x="121" y="96" width="8" height="8" fill="#636366" opacity=".55"/><rect x="132" y="96" width="13" height="8" fill="#636366" opacity=".55"/><rect x="231" y="96" width="10" height="8" fill="#636366" opacity=".55"/><rect x="40" y="111" width="13" height="8" fill="#636366" opacity=".55"/><rect x="56" y="111" width="9" height="8" fill="#636366" opacity=".55"/><rect x="68" y="111" width="12" height="8" fill="#636366" opacity=".55"/><rect x="83" y="111" width="8" height="8" fill="#636366" opacity=".55"/><rect x="94" y="111" width="15" height="8" fill="#636366" opacity=".55"/><rect x="112" y="111" width="7" height="8" fill="#636366" opacity=".55"/><rect x="122" y="111" width="10" height="8" fill="#636366" opacity=".55"/><rect x="135" y="111" width="11" height="8" fill="#636366" opacity=".55"/><rect x="149" y="111" width="8" height="8" fill="#636366" opacity=".55"/><rect x="160" y="111" width="13" height="8" fill="#636366" opacity=".55"/><rect x="176" y="111" width="9" height="8" fill="#636366" opacity=".55"/><rect x="188" y="111" width="14" height="8" fill="#636366" opacity=".55"/><rect x="205" y="111" width="7" height="8" fill="#636366" opacity=".55"/><rect x="215" y="111" width="11" height="8" fill="#636366" opacity=".55"/><rect x="229" y="111" width="8" height="8" fill="#636366" opacity=".55"/><rect x="148" y="50" width="66" height="50" fill="#1c1c1e"/><rect x="148" y="50" width="66" height="50" fill="#0a84ff" opacity=".12"/><rect x="148" y="50" width="66" height="50" fill="none" stroke="#0a84ff" stroke-width="1.5"/><text x="181" y="72" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#0a84ff">1x1</text><text x="181" y="87" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#0a84ff">50 MHz</text></svg><span class="badge">ASIC</span></div>
+      <div class="card-body">
+        <h3>Matrix Inversion ASIC</h3>
+        <span class="stack">Verilog &middot; cocotb &middot; OpenLane &middot; SKY130</span>
+        <p>A 2x2 linear system solver (Ax=b, Q4.4 fixed point) taped out through TinyTapeout. One shared multiplier and a 12 state FSM fit into a 1x1 tile at 50 MHz.</p>
+        <div class="card-foot"><span>Taped out</span><span class="src">Source &rsaquo;</span></div>
+      </div>
+    </a>
+
+    <div class="card">
+      <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 z" fill="#0a84ff"/></marker></defs><text x="24" y="36" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#98989d">8254 TICK</text><path d="M62 42 L62 58" stroke="#0a84ff" stroke-width="1.5" marker-end="url(#ar)"/><rect x="58" y="62" width="34" height="26" fill="none" stroke="#0a84ff"/><text x="75" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#0a84ff">12</text><line x1="92" y1="75" x2="104" y2="75" stroke="#636366"/><rect x="104" y="62" width="34" height="26" fill="none" stroke="#636366"/><text x="121" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#98989d">31</text><line x1="138" y1="75" x2="150" y2="75" stroke="#636366"/><rect x="150" y="62" width="34" height="26" fill="none" stroke="#636366"/><text x="167" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#98989d">47</text><line x1="184" y1="75" x2="196" y2="75" stroke="#636366"/><rect x="196" y="62" width="34" height="26" fill="none" stroke="#636366"/><text x="213" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#98989d">90</text><text x="24" y="114" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="8.5" fill="#636366">sleep_list, sorted</text></svg><span class="badge">Kernel</span></div>
+      <div class="card-body">
+        <h3>Pintos Kernel Scheduler</h3>
+        <span class="stack">C &middot; OS internals</span>
+        <p>Replaced busy waiting with an ordered sleep list and timed wakeups from the 8254 timer ISR, interrupts disabled around insertion so the list is never edited under the handler.</p>
+        <div class="card-foot"><span>6 / 6 tests passing</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="30" y="18" width="230" height="114" fill="none" stroke="#636366"/><line x1="107" y1="18" x2="107" y2="132" stroke="#636366" stroke-dasharray="4 5"/><line x1="184" y1="18" x2="184" y2="132" stroke="#636366" stroke-dasharray="4 5"/><rect x="46" y="38" width="44" height="13" fill="#0a84ff" opacity=".85"/><rect x="200" y="56" width="44" height="13" fill="#0a84ff" opacity=".85"/><rect x="123" y="26" width="44" height="13" fill="#0a84ff" opacity=".5"/><rect x="128" y="106" width="30" height="18" fill="#30d158"/><line x1="30" y1="90" x2="260" y2="90" stroke="#30d158" stroke-width="1.5" opacity=".7"/><text x="256" y="103" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#30d158">BEAM</text></svg><span class="badge">VGA</span></div>
+      <div class="card-body">
+        <h3>FPGA VGA Arcade Game</h3>
+        <span class="stack">Verilog &middot; Vivado &middot; Basys3</span>
+        <p>A three lane endless runner drawn live to a VGA monitor. No framebuffer: every object answers "is this pixel inside me?" combinationally from the beam position.</p>
+        <div class="card-foot"><span>No framebuffer</span></div>
+      </div>
+    </div>
+
+    <a class="card" href="https://github.com/jlab-sensing/ENTS-tock">
+      <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><line x1="44" y1="72" x2="248" y2="72" stroke="#636366"/><circle cx="44" cy="72" r="5" fill="#0a84ff"/><text x="44" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">soil</text><circle cx="95" cy="72" r="5" fill="#636366"/><text x="95" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">stm32</text><circle cx="146" cy="72" r="5" fill="#636366"/><text x="146" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">esp32</text><circle cx="197" cy="72" r="5" fill="#636366"/><text x="197" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">gw</text><circle cx="248" cy="72" r="5" fill="#0a84ff"/><text x="248" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">viz</text><rect x="88" y="68" width="8" height="8" fill="#30d158"/><text x="146" y="44" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="8.5" fill="#0a84ff">i2c / uart / lora</text></svg><span class="badge">Firmware</span></div>
+      <div class="card-body">
+        <h3>ENTS-tock</h3>
+        <span class="stack">Tock OS &middot; I2C &middot; protobuf</span>
+        <p>Lab firmware I contribute to. Routed STM32 microlog output over I2C to an ESP32 so it lands on microSD, extending the protobuf schema without growing the RAM footprint.</p>
+        <div class="card-foot"><span>Upstream</span><span class="src">Source &rsaquo;</span></div>
+      </div>
+    </a>
+
+    <div class="card">
+      <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><line x1="145" y1="41" x2="103" y2="76" stroke="#0a84ff"/><line x1="145" y1="41" x2="187" y2="76" stroke="#636366"/><line x1="103" y1="76" x2="72" y2="111" stroke="#636366"/><line x1="103" y1="76" x2="134" y2="111" stroke="#0a84ff"/><line x1="187" y1="76" x2="218" y2="111" stroke="#636366"/><circle cx="145" cy="41" r="11" fill="none" stroke="#636366" stroke-width="1.4"/><circle cx="103" cy="76" r="11" fill="none" stroke="#0a84ff" stroke-width="1.4"/><circle cx="187" cy="76" r="11" fill="none" stroke="#636366" stroke-width="1.4"/><circle cx="72" cy="111" r="11" fill="none" stroke="#636366" stroke-width="1.4"/><circle cx="134" cy="111" r="11" fill="none" stroke="#0a84ff" stroke-width="1.4"/><circle cx="218" cy="111" r="11" fill="none" stroke="#636366" stroke-width="1.4"/><rect x="99" y="71" width="9" height="7" rx="1" fill="#0a84ff"/><rect x="130" y="106" width="9" height="7" rx="1" fill="#0a84ff"/><text x="258" y="134" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#0a84ff">MUTEX</text></svg><span class="badge">Concurrency</span></div>
+      <div class="card-body">
+        <h3>Thread-Safe Binary Search Tree</h3>
+        <span class="stack">C &middot; pthreads &middot; Valgrind</span>
+        <p>Fine grained mutex locking for insert, search, and delete across many threads, hardened against races and leaks under sustained contention until runs came back clean.</p>
+        <div class="card-foot"><span>Zero leaks</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><line x1="112" y1="75" x2="212" y2="28" stroke="#636366"/><circle cx="218" cy="28" r="5" fill="#636366"/><line x1="112" y1="75" x2="212" y2="47" stroke="#636366"/><circle cx="218" cy="47" r="5" fill="#30d158"/><line x1="112" y1="75" x2="212" y2="66" stroke="#636366"/><circle cx="218" cy="66" r="5" fill="#636366"/><line x1="112" y1="75" x2="212" y2="85" stroke="#636366"/><circle cx="218" cy="85" r="5" fill="#636366"/><line x1="112" y1="75" x2="212" y2="104" stroke="#636366"/><circle cx="218" cy="104" r="5" fill="#30d158"/><line x1="112" y1="75" x2="212" y2="123" stroke="#636366"/><circle cx="218" cy="123" r="5" fill="#636366"/><rect x="52" y="57" width="60" height="36" fill="none" stroke="#0a84ff" stroke-width="1.5"/><text x="82" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#0a84ff">select()</text><text x="82" y="112" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#98989d">1 THREAD</text></svg><span class="badge">Networking</span></div>
+      <div class="card-body">
+        <h3>Multi-Client TCP Chat Server</h3>
+        <span class="stack">C &middot; sockets &middot; select()</span>
+        <p>select() based I/O multiplexing serving many clients concurrently on one thread, handling connects, disconnects, broadcast, and clean session teardown.</p>
+        <div class="card-foot"><span>Single thread</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="66" y="34" width="120" height="82" fill="none" stroke="#636366" stroke-width="1.4"/><rect x="76" y="28" width="4" height="6" fill="#636366"/><rect x="76" y="116" width="4" height="6" fill="#636366"/><rect x="89" y="28" width="4" height="6" fill="#636366"/><rect x="89" y="116" width="4" height="6" fill="#636366"/><rect x="102" y="28" width="4" height="6" fill="#636366"/><rect x="102" y="116" width="4" height="6" fill="#636366"/><rect x="115" y="28" width="4" height="6" fill="#636366"/><rect x="115" y="116" width="4" height="6" fill="#636366"/><rect x="128" y="28" width="4" height="6" fill="#636366"/><rect x="128" y="116" width="4" height="6" fill="#636366"/><rect x="141" y="28" width="4" height="6" fill="#636366"/><rect x="141" y="116" width="4" height="6" fill="#636366"/><rect x="154" y="28" width="4" height="6" fill="#636366"/><rect x="154" y="116" width="4" height="6" fill="#636366"/><rect x="167" y="28" width="4" height="6" fill="#636366"/><rect x="167" y="116" width="4" height="6" fill="#636366"/><rect x="180" y="28" width="4" height="6" fill="#636366"/><rect x="180" y="116" width="4" height="6" fill="#636366"/><rect x="92" y="58" width="46" height="34" fill="none" stroke="#0a84ff"/><text x="115" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="8.5" fill="#0a84ff">C3</text><line x1="186" y1="60" x2="226" y2="60" stroke="#0a84ff"/><line x1="186" y1="73" x2="226" y2="73" stroke="#0a84ff"/><text x="230" y="63" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">SDA</text><text x="230" y="76" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">SCL</text><path d="M196 96 a10 10 0 0 1 0 15" fill="none" stroke="#30d158" stroke-width="1.4"/><path d="M204 90 a17 17 0 0 1 0 27" fill="none" stroke="#30d158" stroke-width="1.4" opacity=".55"/><text x="230" y="108" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">BLE</text></svg><span class="badge">Bring up</span></div>
+      <div class="card-body">
+        <h3>Embedded C on ESP32-C3</h3>
+        <span class="stack">C &middot; ESP-IDF &middot; I2C &middot; BLE</span>
+        <p>I2C sensor bring up, BLE HID, and RTOS tasks. The lab work that made most of the rest of this gallery possible.</p>
+        <div class="card-foot"><span>Bring up</span></div>
+      </div>
+    </div>
+
+    <a class="card" href="https://devpost.com/software/gatherer-0lu4fn">
+      <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><marker id="ar9" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 z" fill="#0a84ff"/></marker></defs><circle cx="34" cy="38" r="4" fill="#636366"/><circle cx="34" cy="60" r="4" fill="#636366"/><circle cx="34" cy="82" r="4" fill="#636366"/><circle cx="34" cy="104" r="4" fill="#636366"/><text x="24" y="26" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">sources</text><path d="M40 38 L104 68" stroke="#636366"/><path d="M40 60 L104 70" stroke="#636366"/><path d="M40 82 L104 74" stroke="#636366"/><path d="M40 104 L104 78" stroke="#636366"/><rect x="108" y="54" width="70" height="38" fill="#1c1c1e"/><rect x="108" y="54" width="70" height="38" fill="#30d158" opacity=".10"/><rect x="108" y="54" width="70" height="38" fill="none" stroke="#30d158" stroke-width="1.5"/><text x="143" y="70" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#30d158">ollama</text><text x="143" y="83" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7" fill="#30d158">local</text><path d="M180 73 L204 73" stroke="#0a84ff" stroke-width="1.5" marker-end="url(#ar9)"/><rect x="212" y="48" width="46" height="11" fill="#30d158" opacity=".75"/><rect x="212" y="65" width="30" height="11" fill="#636366" opacity=".6"/><rect x="212" y="82" width="38" height="11" fill="#0a84ff" opacity=".7"/><text x="256" y="108" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#98989d">+ / -</text></svg><span class="badge">Hackathon</span></div>
+      <div class="card-body">
+        <h3>AutoSentiment</h3>
+        <span class="stack">Python &middot; TypeScript &middot; SQLite &middot; Ollama</span>
+        <p>NVIDIA x ASUS hackathon, four of us. Public sentiment aggregated from scraped news and social sources, every model call served locally by Ollama. We scripted job orchestration in the shell to keep extraction running unattended overnight across rate limited backends.</p>
+        <div class="card-foot"><span>Local inference</span><span class="src">Devpost &rsaquo;</span></div>
+      </div>
+    </a>
+
+    </div>
+    <button class="arrow next" id="next" type="button" aria-label="Next projects">&rsaquo;</button>
+  </div>
+
   <div class="wrap">
-    <div class="grid top">
-
-      <a class="card reveal" style="--d:0ms" href="https://github.com/Azzu-bear/sluggers-of-the-lost-goal">
-        <div class="tile"><picture><source type="image/webp" srcset="assets/proj-robot.webp 1x, assets/proj-robot@2x.webp 2x"><img src="assets/proj-robot.jpg" srcset="assets/proj-robot.jpg 1x, assets/proj-robot@2x.jpg 2x" alt="Top-down view of the Sluggers robot chassis: plywood deck, motors, protoboard and wiring" width="290" height="150" decoding="async"></picture><span class="badge">Robot</span></div>
-        <div class="card-body">
-          <h3>Sluggers of the Lost Goal</h3>
-          <span class="stack">Embedded C &middot; ESP-IDF &middot; HSM</span>
-          <p>Five weeks, $200. A PIC32 runs the state machines; an ESP32-C3 fans eight VL53L1X time of flight sensors out behind an I2C mux, streaming sweeps over UART. I owned the microcontroller subsystem, drove the brushless motor controllers, and designed the analog beacon detection circuit.</p>
-          <div class="card-foot"><span>Competition</span><span class="src">Source &rsaquo;</span></div>
-        </div>
-      </a>
-
-      <a class="card reveal" style="--d:70ms" href="https://github.com/Azzu-bear/TinyTapeout_sky_MatrixInversion">
-        <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="26" y="20" width="238" height="110" fill="none" stroke="#636366"/><rect x="34" y="14" width="7" height="6" fill="#636366"/><rect x="34" y="130" width="7" height="6" fill="#636366"/><rect x="54" y="14" width="7" height="6" fill="#636366"/><rect x="54" y="130" width="7" height="6" fill="#636366"/><rect x="74" y="14" width="7" height="6" fill="#636366"/><rect x="74" y="130" width="7" height="6" fill="#636366"/><rect x="94" y="14" width="7" height="6" fill="#636366"/><rect x="94" y="130" width="7" height="6" fill="#636366"/><rect x="114" y="14" width="7" height="6" fill="#636366"/><rect x="114" y="130" width="7" height="6" fill="#636366"/><rect x="134" y="14" width="7" height="6" fill="#636366"/><rect x="134" y="130" width="7" height="6" fill="#636366"/><rect x="154" y="14" width="7" height="6" fill="#636366"/><rect x="154" y="130" width="7" height="6" fill="#636366"/><rect x="174" y="14" width="7" height="6" fill="#636366"/><rect x="174" y="130" width="7" height="6" fill="#636366"/><rect x="194" y="14" width="7" height="6" fill="#636366"/><rect x="194" y="130" width="7" height="6" fill="#636366"/><rect x="214" y="14" width="7" height="6" fill="#636366"/><rect x="214" y="130" width="7" height="6" fill="#636366"/><rect x="234" y="14" width="7" height="6" fill="#636366"/><rect x="234" y="130" width="7" height="6" fill="#636366"/><rect x="20" y="28" width="6" height="7" fill="#636366"/><rect x="264" y="28" width="6" height="7" fill="#636366"/><rect x="20" y="46" width="6" height="7" fill="#636366"/><rect x="264" y="46" width="6" height="7" fill="#636366"/><rect x="20" y="64" width="6" height="7" fill="#636366"/><rect x="264" y="64" width="6" height="7" fill="#636366"/><rect x="20" y="82" width="6" height="7" fill="#636366"/><rect x="264" y="82" width="6" height="7" fill="#636366"/><rect x="20" y="100" width="6" height="7" fill="#636366"/><rect x="264" y="100" width="6" height="7" fill="#636366"/><rect x="20" y="118" width="6" height="7" fill="#636366"/><rect x="264" y="118" width="6" height="7" fill="#636366"/><rect x="40" y="36" width="9" height="8" fill="#636366" opacity=".55"/><rect x="52" y="36" width="14" height="8" fill="#636366" opacity=".55"/><rect x="69" y="36" width="7" height="8" fill="#636366" opacity=".55"/><rect x="79" y="36" width="11" height="8" fill="#636366" opacity=".55"/><rect x="93" y="36" width="8" height="8" fill="#636366" opacity=".55"/><rect x="104" y="36" width="16" height="8" fill="#636366" opacity=".55"/><rect x="123" y="36" width="10" height="8" fill="#636366" opacity=".55"/><rect x="136" y="36" width="7" height="8" fill="#636366" opacity=".55"/><rect x="146" y="36" width="13" height="8" fill="#636366" opacity=".55"/><rect x="162" y="36" width="9" height="8" fill="#636366" opacity=".55"/><rect x="174" y="36" width="12" height="8" fill="#636366" opacity=".55"/><rect x="189" y="36" width="8" height="8" fill="#636366" opacity=".55"/><rect x="200" y="36" width="15" height="8" fill="#636366" opacity=".55"/><rect x="218" y="36" width="7" height="8" fill="#636366" opacity=".55"/><rect x="228" y="36" width="10" height="8" fill="#636366" opacity=".55"/><rect x="40" y="51" width="8" height="8" fill="#636366" opacity=".55"/><rect x="51" y="51" width="13" height="8" fill="#636366" opacity=".55"/><rect x="67" y="51" width="9" height="8" fill="#636366" opacity=".55"/><rect x="79" y="51" width="14" height="8" fill="#636366" opacity=".55"/><rect x="96" y="51" width="7" height="8" fill="#636366" opacity=".55"/><rect x="106" y="51" width="11" height="8" fill="#636366" opacity=".55"/><rect x="120" y="51" width="8" height="8" fill="#636366" opacity=".55"/><rect x="131" y="51" width="16" height="8" fill="#636366" opacity=".55"/><rect x="216" y="51" width="8" height="8" fill="#636366" opacity=".55"/><rect x="227" y="51" width="15" height="8" fill="#636366" opacity=".55"/><rect x="40" y="66" width="10" height="8" fill="#636366" opacity=".55"/><rect x="53" y="66" width="11" height="8" fill="#636366" opacity=".55"/><rect x="67" y="66" width="8" height="8" fill="#636366" opacity=".55"/><rect x="78" y="66" width="13" height="8" fill="#636366" opacity=".55"/><rect x="94" y="66" width="9" height="8" fill="#636366" opacity=".55"/><rect x="106" y="66" width="14" height="8" fill="#636366" opacity=".55"/><rect x="123" y="66" width="7" height="8" fill="#636366" opacity=".55"/><rect x="133" y="66" width="11" height="8" fill="#636366" opacity=".55"/><rect x="216" y="66" width="9" height="8" fill="#636366" opacity=".55"/><rect x="228" y="66" width="12" height="8" fill="#636366" opacity=".55"/><rect x="40" y="81" width="15" height="8" fill="#636366" opacity=".55"/><rect x="58" y="81" width="7" height="8" fill="#636366" opacity=".55"/><rect x="68" y="81" width="10" height="8" fill="#636366" opacity=".55"/><rect x="81" y="81" width="11" height="8" fill="#636366" opacity=".55"/><rect x="95" y="81" width="8" height="8" fill="#636366" opacity=".55"/><rect x="106" y="81" width="13" height="8" fill="#636366" opacity=".55"/><rect x="122" y="81" width="9" height="8" fill="#636366" opacity=".55"/><rect x="134" y="81" width="14" height="8" fill="#636366" opacity=".55"/><rect x="218" y="81" width="7" height="8" fill="#636366" opacity=".55"/><rect x="228" y="81" width="13" height="8" fill="#636366" opacity=".55"/><rect x="40" y="96" width="12" height="8" fill="#636366" opacity=".55"/><rect x="55" y="96" width="8" height="8" fill="#636366" opacity=".55"/><rect x="66" y="96" width="15" height="8" fill="#636366" opacity=".55"/><rect x="84" y="96" width="7" height="8" fill="#636366" opacity=".55"/><rect x="94" y="96" width="10" height="8" fill="#636366" opacity=".55"/><rect x="107" y="96" width="11" height="8" fill="#636366" opacity=".55"/><rect x="121" y="96" width="8" height="8" fill="#636366" opacity=".55"/><rect x="132" y="96" width="13" height="8" fill="#636366" opacity=".55"/><rect x="231" y="96" width="10" height="8" fill="#636366" opacity=".55"/><rect x="40" y="111" width="13" height="8" fill="#636366" opacity=".55"/><rect x="56" y="111" width="9" height="8" fill="#636366" opacity=".55"/><rect x="68" y="111" width="12" height="8" fill="#636366" opacity=".55"/><rect x="83" y="111" width="8" height="8" fill="#636366" opacity=".55"/><rect x="94" y="111" width="15" height="8" fill="#636366" opacity=".55"/><rect x="112" y="111" width="7" height="8" fill="#636366" opacity=".55"/><rect x="122" y="111" width="10" height="8" fill="#636366" opacity=".55"/><rect x="135" y="111" width="11" height="8" fill="#636366" opacity=".55"/><rect x="149" y="111" width="8" height="8" fill="#636366" opacity=".55"/><rect x="160" y="111" width="13" height="8" fill="#636366" opacity=".55"/><rect x="176" y="111" width="9" height="8" fill="#636366" opacity=".55"/><rect x="188" y="111" width="14" height="8" fill="#636366" opacity=".55"/><rect x="205" y="111" width="7" height="8" fill="#636366" opacity=".55"/><rect x="215" y="111" width="11" height="8" fill="#636366" opacity=".55"/><rect x="229" y="111" width="8" height="8" fill="#636366" opacity=".55"/><rect x="148" y="50" width="66" height="50" fill="#1c1c1e"/><rect x="148" y="50" width="66" height="50" fill="#0a84ff" opacity=".12"/><rect x="148" y="50" width="66" height="50" fill="none" stroke="#0a84ff" stroke-width="1.5"/><text x="181" y="72" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#0a84ff">1x1</text><text x="181" y="87" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#0a84ff">50 MHz</text></svg><span class="badge">ASIC</span></div>
-        <div class="card-body">
-          <h3>Matrix Inversion ASIC</h3>
-          <span class="stack">Verilog &middot; cocotb &middot; OpenLane &middot; SKY130</span>
-          <p>A 2x2 linear system solver (Ax=b, Q4.4 fixed point) taped out through TinyTapeout. One shared multiplier and a 12 state FSM fit into a 1x1 tile at 50 MHz.</p>
-          <div class="card-foot"><span>Taped out</span><span class="src">Source &rsaquo;</span></div>
-        </div>
-      </a>
-
-      <div class="card reveal" style="--d:140ms">
-        <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 z" fill="#0a84ff"/></marker></defs><text x="24" y="36" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#98989d">8254 TICK</text><path d="M62 42 L62 58" stroke="#0a84ff" stroke-width="1.5" marker-end="url(#ar)"/><rect x="58" y="62" width="34" height="26" fill="none" stroke="#0a84ff"/><text x="75" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#0a84ff">12</text><line x1="92" y1="75" x2="104" y2="75" stroke="#636366"/><rect x="104" y="62" width="34" height="26" fill="none" stroke="#636366"/><text x="121" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#98989d">31</text><line x1="138" y1="75" x2="150" y2="75" stroke="#636366"/><rect x="150" y="62" width="34" height="26" fill="none" stroke="#636366"/><text x="167" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#98989d">47</text><line x1="184" y1="75" x2="196" y2="75" stroke="#636366"/><rect x="196" y="62" width="34" height="26" fill="none" stroke="#636366"/><text x="213" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#98989d">90</text><text x="24" y="114" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="8.5" fill="#636366">sleep_list, sorted</text></svg><span class="badge">Kernel</span></div>
-        <div class="card-body">
-          <h3>Pintos Kernel Scheduler</h3>
-          <span class="stack">C &middot; OS internals</span>
-          <p>Replaced busy waiting with an ordered sleep list and timed wakeups from the 8254 timer ISR, interrupts disabled around insertion so the list is never edited under the handler.</p>
-          <div class="card-foot"><span>6 / 6 tests passing</span></div>
-        </div>
-      </div>
-
-      <div class="card reveal" style="--d:210ms">
-        <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="30" y="18" width="230" height="114" fill="none" stroke="#636366"/><line x1="107" y1="18" x2="107" y2="132" stroke="#636366" stroke-dasharray="4 5"/><line x1="184" y1="18" x2="184" y2="132" stroke="#636366" stroke-dasharray="4 5"/><rect x="46" y="38" width="44" height="13" fill="#0a84ff" opacity=".85"/><rect x="200" y="56" width="44" height="13" fill="#0a84ff" opacity=".85"/><rect x="123" y="26" width="44" height="13" fill="#0a84ff" opacity=".5"/><rect x="128" y="106" width="30" height="18" fill="#30d158"/><line x1="30" y1="90" x2="260" y2="90" stroke="#30d158" stroke-width="1.5" opacity=".7"/><text x="256" y="103" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#30d158">BEAM</text></svg><span class="badge">VGA</span></div>
-        <div class="card-body">
-          <h3>FPGA VGA Arcade Game</h3>
-          <span class="stack">Verilog &middot; Vivado &middot; Basys3</span>
-          <p>A three lane endless runner drawn live to a VGA monitor. No framebuffer: every object answers "is this pixel inside me?" combinationally from the beam position.</p>
-          <div class="card-foot"><span>No framebuffer</span></div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="grid more" id="more">
-
-      <a class="card reveal" style="--d:0ms" href="https://github.com/jlab-sensing/ENTS-tock">
-        <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><line x1="44" y1="72" x2="248" y2="72" stroke="#636366"/><circle cx="44" cy="72" r="5" fill="#0a84ff"/><text x="44" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">soil</text><circle cx="95" cy="72" r="5" fill="#636366"/><text x="95" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">stm32</text><circle cx="146" cy="72" r="5" fill="#636366"/><text x="146" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">esp32</text><circle cx="197" cy="72" r="5" fill="#636366"/><text x="197" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">gw</text><circle cx="248" cy="72" r="5" fill="#0a84ff"/><text x="248" y="96" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">viz</text><rect x="88" y="68" width="8" height="8" fill="#30d158"/><text x="146" y="44" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="8.5" fill="#0a84ff">i2c / uart / lora</text></svg><span class="badge">Firmware</span></div>
-        <div class="card-body">
-          <h3>ENTS-tock</h3>
-          <span class="stack">Tock OS &middot; I2C &middot; protobuf</span>
-          <p>Lab firmware I contribute to. Routed STM32 microlog output over I2C to an ESP32 so it lands on microSD, extending the protobuf schema without growing the RAM footprint.</p>
-          <div class="card-foot"><span>Upstream</span><span class="src">Source &rsaquo;</span></div>
-        </div>
-      </a>
-
-      <div class="card reveal" style="--d:60ms">
-        <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><line x1="145" y1="41" x2="103" y2="76" stroke="#0a84ff"/><line x1="145" y1="41" x2="187" y2="76" stroke="#636366"/><line x1="103" y1="76" x2="72" y2="111" stroke="#636366"/><line x1="103" y1="76" x2="134" y2="111" stroke="#0a84ff"/><line x1="187" y1="76" x2="218" y2="111" stroke="#636366"/><circle cx="145" cy="41" r="11" fill="none" stroke="#636366" stroke-width="1.4"/><circle cx="103" cy="76" r="11" fill="none" stroke="#0a84ff" stroke-width="1.4"/><circle cx="187" cy="76" r="11" fill="none" stroke="#636366" stroke-width="1.4"/><circle cx="72" cy="111" r="11" fill="none" stroke="#636366" stroke-width="1.4"/><circle cx="134" cy="111" r="11" fill="none" stroke="#0a84ff" stroke-width="1.4"/><circle cx="218" cy="111" r="11" fill="none" stroke="#636366" stroke-width="1.4"/><rect x="99" y="71" width="9" height="7" rx="1" fill="#0a84ff"/><rect x="130" y="106" width="9" height="7" rx="1" fill="#0a84ff"/><text x="258" y="134" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#0a84ff">MUTEX</text></svg><span class="badge">Concurrency</span></div>
-        <div class="card-body">
-          <h3>Thread-Safe Binary Search Tree</h3>
-          <span class="stack">C &middot; pthreads &middot; Valgrind</span>
-          <p>Fine grained mutex locking for insert, search, and delete across many threads, hardened against races and leaks under sustained contention until runs came back clean.</p>
-          <div class="card-foot"><span>Zero leaks</span></div>
-        </div>
-      </div>
-
-      <div class="card reveal" style="--d:120ms">
-        <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><line x1="112" y1="75" x2="212" y2="28" stroke="#636366"/><circle cx="218" cy="28" r="5" fill="#636366"/><line x1="112" y1="75" x2="212" y2="47" stroke="#636366"/><circle cx="218" cy="47" r="5" fill="#30d158"/><line x1="112" y1="75" x2="212" y2="66" stroke="#636366"/><circle cx="218" cy="66" r="5" fill="#636366"/><line x1="112" y1="75" x2="212" y2="85" stroke="#636366"/><circle cx="218" cy="85" r="5" fill="#636366"/><line x1="112" y1="75" x2="212" y2="104" stroke="#636366"/><circle cx="218" cy="104" r="5" fill="#30d158"/><line x1="112" y1="75" x2="212" y2="123" stroke="#636366"/><circle cx="218" cy="123" r="5" fill="#636366"/><rect x="52" y="57" width="60" height="36" fill="none" stroke="#0a84ff" stroke-width="1.5"/><text x="82" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#0a84ff">select()</text><text x="82" y="112" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#98989d">1 THREAD</text></svg><span class="badge">Networking</span></div>
-        <div class="card-body">
-          <h3>Multi-Client TCP Chat Server</h3>
-          <span class="stack">C &middot; sockets &middot; select()</span>
-          <p>select() based I/O multiplexing serving many clients concurrently on one thread, handling connects, disconnects, broadcast, and clean session teardown.</p>
-          <div class="card-foot"><span>Single thread</span></div>
-        </div>
-      </div>
-
-      <div class="card reveal" style="--d:180ms">
-        <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="66" y="34" width="120" height="82" fill="none" stroke="#636366" stroke-width="1.4"/><rect x="76" y="28" width="4" height="6" fill="#636366"/><rect x="76" y="116" width="4" height="6" fill="#636366"/><rect x="89" y="28" width="4" height="6" fill="#636366"/><rect x="89" y="116" width="4" height="6" fill="#636366"/><rect x="102" y="28" width="4" height="6" fill="#636366"/><rect x="102" y="116" width="4" height="6" fill="#636366"/><rect x="115" y="28" width="4" height="6" fill="#636366"/><rect x="115" y="116" width="4" height="6" fill="#636366"/><rect x="128" y="28" width="4" height="6" fill="#636366"/><rect x="128" y="116" width="4" height="6" fill="#636366"/><rect x="141" y="28" width="4" height="6" fill="#636366"/><rect x="141" y="116" width="4" height="6" fill="#636366"/><rect x="154" y="28" width="4" height="6" fill="#636366"/><rect x="154" y="116" width="4" height="6" fill="#636366"/><rect x="167" y="28" width="4" height="6" fill="#636366"/><rect x="167" y="116" width="4" height="6" fill="#636366"/><rect x="180" y="28" width="4" height="6" fill="#636366"/><rect x="180" y="116" width="4" height="6" fill="#636366"/><rect x="92" y="58" width="46" height="34" fill="none" stroke="#0a84ff"/><text x="115" y="79" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="8.5" fill="#0a84ff">C3</text><line x1="186" y1="60" x2="226" y2="60" stroke="#0a84ff"/><line x1="186" y1="73" x2="226" y2="73" stroke="#0a84ff"/><text x="230" y="63" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">SDA</text><text x="230" y="76" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">SCL</text><path d="M196 96 a10 10 0 0 1 0 15" fill="none" stroke="#30d158" stroke-width="1.4"/><path d="M204 90 a17 17 0 0 1 0 27" fill="none" stroke="#30d158" stroke-width="1.4" opacity=".55"/><text x="230" y="108" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">BLE</text></svg><span class="badge">Bring up</span></div>
-        <div class="card-body">
-          <h3>Embedded C on ESP32-C3</h3>
-          <span class="stack">C &middot; ESP-IDF &middot; I2C &middot; BLE</span>
-          <p>I2C sensor bring up, BLE HID, and RTOS tasks. The lab work that made most of the rest of this gallery possible.</p>
-          <div class="card-foot"><span>Bring up</span></div>
-        </div>
-      </div>
-
-      <a class="card reveal" style="--d:240ms" href="https://devpost.com/software/gatherer-0lu4fn">
-        <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><marker id="ar9" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 z" fill="#0a84ff"/></marker></defs><circle cx="34" cy="38" r="4" fill="#636366"/><circle cx="34" cy="60" r="4" fill="#636366"/><circle cx="34" cy="82" r="4" fill="#636366"/><circle cx="34" cy="104" r="4" fill="#636366"/><text x="24" y="26" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">sources</text><path d="M40 38 L104 68" stroke="#636366"/><path d="M40 60 L104 70" stroke="#636366"/><path d="M40 82 L104 74" stroke="#636366"/><path d="M40 104 L104 78" stroke="#636366"/><rect x="108" y="54" width="70" height="38" fill="#1c1c1e"/><rect x="108" y="54" width="70" height="38" fill="#30d158" opacity=".10"/><rect x="108" y="54" width="70" height="38" fill="none" stroke="#30d158" stroke-width="1.5"/><text x="143" y="70" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="9" fill="#30d158">ollama</text><text x="143" y="83" text-anchor="middle" font-family="ui-monospace,Consolas,monospace" font-size="7" fill="#30d158">local</text><path d="M180 73 L204 73" stroke="#0a84ff" stroke-width="1.5" marker-end="url(#ar9)"/><rect x="212" y="48" width="46" height="11" fill="#30d158" opacity=".75"/><rect x="212" y="65" width="30" height="11" fill="#636366" opacity=".6"/><rect x="212" y="82" width="38" height="11" fill="#0a84ff" opacity=".7"/><text x="256" y="108" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="8" fill="#98989d">+ / -</text></svg><span class="badge">Hackathon</span></div>
-        <div class="card-body">
-          <h3>AutoSentiment</h3>
-          <span class="stack">Python &middot; TypeScript &middot; SQLite &middot; Ollama</span>
-          <p>NVIDIA x ASUS hackathon, four of us. Public sentiment aggregated from scraped news and social sources, every model call served locally by Ollama. We scripted job orchestration in the shell to keep extraction running unattended overnight across rate limited backends.</p>
-          <div class="card-foot"><span>Local inference</span><span class="src">Devpost &rsaquo;</span></div>
-        </div>
-      </a>
-
-    </div>
-
-    <div class="more-row">
-      <button class="btn quiet" id="toggle" type="button" aria-expanded="false" aria-controls="more"><span id="toggle-label">Show all nine</span></button>
-    </div>
+    <p class="count" id="count" aria-live="polite">9 projects</p>
   </div>
 </section>
 
@@ -1300,21 +1331,85 @@ a.card.in:hover {
     for (var k = 0; k < sections.length; k++) navIo.observe(sections[k]);
   }
 
-  /* ---------- projects: show the rest on request ---------- */
-  var more   = document.getElementById("more");
-  var toggle = document.getElementById("toggle");
-  var label  = document.getElementById("toggle-label");
+  /* ---------- projects shelf ---------- */
+  var rail = document.getElementById("rail");
+  if (!rail) return;
 
-  if (more && toggle) {
-    toggle.addEventListener("click", function () {
-      var open = more.classList.toggle("open");
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      label.textContent = open ? "Show top four" : "Show all nine";
-      if (!open) {
-        document.getElementById("projects").scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
-      }
-    });
+  var cards = rail.querySelectorAll(".card");
+  var prev  = document.getElementById("prev");
+  var next  = document.getElementById("next");
+  var count = document.getElementById("count");
+  var want  = null;      /* index a click is heading for, while the scroll is in flight */
+  var settle = null;
+
+  /* layout distances only, so card transforms never skew the maths */
+  function step() {
+    return cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : rail.clientWidth;
   }
+  function maxLeft() { return rail.scrollWidth - rail.clientWidth; }
+
+  /* how many distinct resting positions the rail has at this width */
+  function stops() {
+    var s = step(), m = maxLeft();
+    if (s <= 0 || m <= 1) return 1;
+    return Math.ceil((m - 1) / s) + 1;
+  }
+
+  function index() {
+    var n = stops();
+    if (rail.scrollLeft >= maxLeft() - 2) return n - 1;
+    return Math.max(0, Math.min(Math.round(rail.scrollLeft / step()), n - 1));
+  }
+
+  /* first and last card that are wholly on screen */
+  function visible() {
+    var first = -1, last = -1, w = rail.clientWidth;
+    for (var i = 0; i < cards.length; i++) {
+      var l = cards[i].offsetLeft - rail.scrollLeft;
+      var r = l + cards[i].offsetWidth;
+      if (l >= -2 && r <= w + 2) { if (first < 0) first = i; last = i; }
+    }
+    if (first < 0) {            /* narrow screen, mid-swipe: nearest card */
+      first = last = Math.max(0, Math.min(Math.round(rail.scrollLeft / step()), cards.length - 1));
+    }
+    return { first: first, last: last };
+  }
+
+  function sync() {
+    var v = visible(), n = cards.length;
+    count.textContent = (v.first === v.last
+      ? (v.first + 1)
+      : (v.first + 1) + "\u2013" + (v.last + 1)) + " of " + n;
+    prev.disabled = rail.scrollLeft <= 2;
+    next.disabled = rail.scrollLeft >= maxLeft() - 2;
+  }
+
+  /* arrows move a page at a time */
+  function go(dir) {
+    var n = stops(), v = visible();
+    var page = Math.max(1, v.last - v.first + 1);
+    var from = want === null ? index() : want;
+    want = Math.max(0, Math.min(from + dir * page, n - 1));
+    var left = want === n - 1 ? maxLeft() : want * step();
+    rail.scrollTo({ left: left, behavior: reduced ? "auto" : "smooth" });
+  }
+
+  prev.addEventListener("click", function () { go(-1); });
+  next.addEventListener("click", function () { go(1); });
+
+  rail.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+    if (e.key === "ArrowLeft")  { e.preventDefault(); go(-1); }
+  });
+
+  rail.addEventListener("scroll", function () {
+    sync();
+    clearTimeout(settle);
+    settle = setTimeout(function () { want = null; sync(); }, 140);
+  }, { passive: true });
+
+  window.addEventListener("resize", sync);
+  sync();
 })();
 
 /* ---------- effects ---------- */

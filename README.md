@@ -21,8 +21,9 @@ It follows the system light or dark setting.
 
 Figures sit on dark tiles in both themes, the way product shots do. The hero
 tile is the ENTS data path with a packet travelling the hops. Projects are a
-static two by two grid of the top four; the other five sit in a second grid
-behind the "Show all nine" button. Eight of the nine tiles are inline SVG
+single shelf that pages sideways, three across with a slice of the next card
+showing, edge arrows, and a "1–3 of 9" counter. Every card stays at full
+brightness so the slice reads as more to see, not as disabled. Eight of the nine tiles are inline SVG
 drawings of the actual mechanism and the ninth is a photograph of the Sluggers
 chassis.
 
@@ -42,7 +43,7 @@ Motion is kept quick so a fast scroll never lands on a blank section.
   swinging flat) use CSS `animation-timeline` inside `@supports`.
 
 All of it is switched off under `prefers-reduced-motion`, and without
-JavaScript every element is simply visible, with all nine projects shown.
+JavaScript every element is simply visible and the shelf scrolls natively.
 
 ## Editing
 
@@ -57,12 +58,12 @@ Sections are `<section id="...">`: `work`, `projects`, `approach`, `stack`,
 the `<section>` and an `<li>`. Give the `<li>` `class="opt"` to hide it at
 phone width, where only Projects, Resume and Contact are shown.
 
-To add a project, copy a `.card` block into `.grid.top` (the four always
-shown) or `.grid.more`. Cards with a link use `<a class="card" href="...">`;
+To add a project, copy a `.card` block inside `#rail`; the first three are
+the ones seen without paging, so order matters. Cards with a link use `<a class="card" href="...">`;
 cards without one use `<div class="card">` and leave the right side of the
 footer empty. Tile art goes in the `.tile` div: an inline
-`<svg viewBox="0 0 290 150">` or a `<picture>`. If the total changes, update
-the button label in the script and the section headline.
+`<svg viewBox="0 0 290 150">` or a `<picture>`. The counter reads the card
+count itself; if the total changes, update the section headline.
 
 ## Palette
 
