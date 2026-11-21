@@ -22,9 +22,9 @@ It follows the system light or dark setting.
 Figures sit on dark tiles in both themes, the way product shots do. The hero
 tile is the ENTS data path with a packet travelling the hops. Projects are a
 single shelf that pages sideways, three across with a slice of the next card
-showing, edge arrows, and a "1–3 of 9" counter. Every card stays at full
-brightness so the slice reads as more to see, not as disabled. Eight of the nine tiles are inline SVG
-drawings of the actual mechanism and the ninth is a photograph of the Sluggers
+showing, edge arrows, and a "1–3 of 10" counter. Every card stays at full
+brightness so the slice reads as more to see, not as disabled. Nine of the ten tiles are inline SVG
+drawings of the actual mechanism and the other is a photograph of the Sluggers
 chassis.
 
 ## Motion

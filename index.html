@@ -995,7 +995,7 @@ html:not(.js) .arrow { display: none; }
   <div class="wrap">
     <div class="shead wide reveal">
       <p class="eyebrow">Projects</p>
-      <h2>Nine things I built.</h2>
+      <h2>Ten things I built.</h2>
       <p>A chip taped out on SKY130, a kernel scheduler, a VGA game with no framebuffer, and a robot that started working the week it had to.</p>
     </div>
   </div>
@@ -1051,6 +1051,16 @@ html:not(.js) .arrow { display: none; }
         <span class="stack">Tock OS &middot; I2C &middot; protobuf</span>
         <p>Lab firmware I contribute to. Routed STM32 microlog output over I2C to an ESP32 so it lands on microSD, extending the protobuf schema without growing the RAM footprint.</p>
         <div class="card-foot"><span>Upstream</span><span class="src">Source &rsaquo;</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/Azzu-bear/openf1-telemetry">
+      <div class="tile"><svg viewBox="0 0 290 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><text x="24" y="24" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">SPEED / DISTANCE</text><line x1="232" y1="21" x2="244" y2="21" stroke="#0a84ff" stroke-width="1.6"/><text x="247" y="24" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#0a84ff">A</text><line x1="256" y1="21" x2="262" y2="21" stroke="#98989d" stroke-width="1.3"/><text x="265" y="24" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#98989d">B</text><line x1="106" y1="32" x2="106" y2="96" stroke="#2c2c2e" stroke-dasharray="3 4"/><line x1="210" y1="32" x2="210" y2="96" stroke="#2c2c2e" stroke-dasharray="3 4"/><polyline fill="none" stroke="#98989d" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" points="24,52 52,45 80,42 94,62 106,84 122,70 142,54 170,45 190,42 200,64 210,86 226,70 246,54 266,48"/><polyline fill="none" stroke="#0a84ff" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round" points="24,50 52,42 86,38 98,58 108,80 120,62 142,48 170,40 196,37 204,58 212,82 224,62 246,48 266,43"/><line x1="24" y1="96" x2="266" y2="96" stroke="#2c2c2e"/><text x="24" y="110" text-anchor="start" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#636366">DELTA</text><line x1="24" y1="124" x2="266" y2="124" stroke="#636366" stroke-dasharray="2 4"/><polyline fill="none" stroke="#30d158" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" points="24,124 80,124 94,121 108,117 124,119 190,119 202,116 212,112 228,114 266,113"/><text x="266" y="136" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="7.5" fill="#30d158">+0.035 s</text></svg><span class="badge">Telemetry</span></div>
+      <div class="card-body">
+        <h3>OpenF1 Telemetry Comparison</h3>
+        <span class="stack">Python &middot; pandas &middot; Plotly &middot; Streamlit</span>
+        <p>Compares two Formula 1 drivers on any lap since 2023, straight from the OpenF1 API. The feed is a 3.7 Hz time series, so speed is integrated into distance to put both cars on one axis, then a delta trace shows where each gains. Checked against official lap times and real circuit lengths.</p>
+        <div class="card-foot"><span>Distance, not time</span><span class="src">Source &rsaquo;</span></div>
       </div>
     </a>
 
