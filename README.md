@@ -1,52 +1,81 @@
 # azzu-bear.github.io
 
-Personal site. Live at <https://azzu-bear.github.io/>.
+Personal site. Live at <https://azammohamed.com/>.
 
-Hand written HTML and CSS, no build step, no dependencies, no JavaScript.
-GitHub Pages serves the repo root, so editing `index.html` and pushing to
-`main` is the whole deploy process.
+Hand written HTML and CSS with one small inline script. No build step and no
+packages. GitHub Pages serves the repo root, so editing `index.html` and
+pushing to `main` is the whole deploy process.
 
 ```
-index.html    the entire site, styles inline in <head>
+index.html    the entire site, styles and script inline
 404.html      not-found page, served by Pages automatically
 favicon.svg   tab icon
-assets/       portrait, project tile art, social card
+assets/       portrait, project photo, resume thumbnail, social card
 ```
 
 ## Design
 
-An engineering document rather than a product page: hairline rules instead of
-cards, a spec table instead of stat tiles, numbered figures, and monospace
-reserved for metadata (dates, stacks, labels) while headings stay in sans.
+Modeled on apple.com: a translucent blurred nav, one large centered headline
+per section, pill buttons, generous whitespace, and a single blue accent.
+It follows the system light or dark setting.
 
-Projects are a horizontal **contact sheet** at `§1`. Each frame carries a
-sprocket strip, a 290x150 figure, and the details below. Seven of the figures
-are inline SVG drawings of the actual mechanism (floorplan, sleep list, VGA
-beam, hop chain, locked BST, `select()` fan-out, ESP32 bus). The eighth is a
-real photograph of the Sluggers chassis.
+Figures sit on dark tiles in both themes, the way product shots do. The hero
+tile is the ENTS data path with a packet travelling the hops. The projects are
+a horizontal snap gallery; eight of the nine tiles are inline SVG drawings of
+the actual mechanism and the ninth is a photograph of the Sluggers chassis.
+
+## Motion
+
+- `.reveal` fades and lifts an element in when it scrolls into view. Stagger
+  siblings with `style="--d:80ms"`.
+- `.pop` is the larger scale-up used on the hero tile.
+- The nav highlights the section in view and carries a scroll progress line.
+- The gallery has previous and next buttons, dots, and arrow key support.
+- Headlines are split into words by script and arrive out of a blur.
+- Hero: drifting aurora, a colour ring on the portrait, a metal sheen on the
+  tagline (`.metal`). `.grad` is the moving gradient headline.
+- Cards and panels have a cursor spotlight; project cards tilt toward it.
+- Scroll-linked pieces (hero fade, stage grow, gallery card scale, resume
+  swing, the approach text lighting up) use CSS `animation-timeline`. They sit
+  inside `@supports`, so browsers without it fall back to the plain reveals.
+
+All of it is switched off under `prefers-reduced-motion`, and the page reads
+fine with JavaScript disabled apart from the reveals, so keep content out of
+script.
 
 ## Editing
 
-Open `index.html` in a browser. Nothing to install.
+Preview locally with any static server, for example:
 
-Sections are `<section id="...">`: `projects`, `log`, `notes`, `stack`,
-`contact`. The nav links to those ids, so a new section needs both the
-`<section>` and an `<li>`.
+```
+python -m http.server 8787
+```
 
-To add a project, copy a `.frame-card` block inside `.sheet`. Cards with a repo
-use `<a class="frame-card" href="...">`; cards without one use
-`<div class="frame-card">`, which drops the arrow. Tile art lives in the
-`.field` div: either an inline `<svg viewBox="0 0 290 150">` (add `fig-bg` to
-the class for the graph-paper ground) or a `<picture>` for a photo.
+Sections are `<section id="...">`: `work`, `projects`, `approach`, `stack`,
+`resume`, `contact`. The nav links to those ids, so a new section needs both
+the `<section>` and an `<li>`.
+
+To add a project, copy a `.card` block inside `#rail`. Cards with a link use
+`<a class="card" href="...">`; cards without one use `<div class="card">` and
+mark the footer `<span class="src off">No repo</span>`. Tile art goes in the
+`.tile` div: an inline `<svg viewBox="0 0 290 150">` or a `<picture>`. The
+gallery dots are generated from the rail width, so nothing else needs updating.
 
 ## Palette
 
 ```
-#0e0f10  background       #d29922  amber, the drawing ink and primary accent
-#141517  raised panels    #3fb950  green, links and live elements
-#26282b  rules            #e9e8e5  headings
-#85857f  dimmed text      #b0b0ac  body
+light                          dark
+#fbfbfd  background            #000000
+#f5f5f7  panels                #1c1c1e
+#1d1d1f  headings              #f5f5f7
+#424245  body                  #d6d6d8
+#6e6e73  dimmed                #98989d
+#d2d2d7  rules                 #2c2c2e
+#0071e3  accent                #2997ff
 ```
 
-Amber carries the accent work; green is reserved for links and anything
-depicting motion or a live state, so it stays meaningful.
+Inside the dark figure tiles: `#0a84ff` is the drawing ink and `#30d158` is
+reserved for anything depicting motion or a live state.
+
+Type is the system SF Pro stack on Apple devices, with Inter (Google Fonts)
+as the fallback everywhere else.
