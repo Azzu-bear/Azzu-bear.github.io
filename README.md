@@ -9,7 +9,7 @@ pushing to `main` is the whole deploy process.
 ```
 index.html    the entire site, styles and script inline
 404.html      not-found page, served by Pages automatically
-favicon.svg   tab icon
+favicon.svg   tab icon, a Formula car from above
 assets/       portrait, project photo, resume thumbnail, social card
 ```
 
