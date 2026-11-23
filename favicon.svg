@@ -1,25 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- a Formula car seen from above, nose up, on a dark tile so it reads on light and dark tabs -->
-  <rect width="64" height="64" rx="14" fill="#1d1d1f"/>
+  <!-- a one-handed backhand at the finish: hitting arm high, off arm thrown back for balance,
+       on hard-court blue. An original pictogram, not a likeness. -->
+  <rect width="64" height="64" rx="14" fill="#0a7bdc"/>
 
-  <!-- tyres -->
-  <g fill="#f5f5f7">
-    <rect x="12.5" y="15" width="9"  height="13" rx="3"/>
-    <rect x="42.5" y="15" width="9"  height="13" rx="3"/>
-    <rect x="10.5" y="37" width="11" height="15" rx="3.5"/>
-    <rect x="42.5" y="37" width="11" height="15" rx="3.5"/>
+  <g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+    <!-- legs: wide stance, front knee bent into the shot -->
+    <path d="M25 37 L34.5 45 L37 57" stroke-width="5.6"/>
+    <path d="M25 37 L17.5 46.5 L9.5 56" stroke-width="5.6"/>
+    <!-- torso, leaning into the follow-through -->
+    <path d="M27.5 22.5 L25 37" stroke-width="7.6"/>
+    <!-- off arm back, hitting arm up and through -->
+    <path d="M26.5 23.5 L18.5 25.5 L11 31.5" stroke-width="4.4"/>
+    <path d="M28.5 22.5 L36.5 20 L43.5 14.5" stroke-width="4.4"/>
+    <!-- racket -->
+    <path d="M43.5 14.5 L46.6 11.8" stroke-width="2.6"/>
+    <ellipse cx="50.2" cy="8.7" rx="4.3" ry="5.9" transform="rotate(42 50.2 8.7)" stroke-width="2.3" fill="#ffffff" fill-opacity=".28"/>
   </g>
 
-  <!-- wings, suspension arms, and the body -->
-  <g fill="#ff453a">
-    <rect x="15" y="7"  width="34" height="6" rx="2"/>
-    <rect x="17" y="52.5" width="30" height="6" rx="2"/>
-    <rect x="21" y="19.5" width="22" height="3"/>
-    <rect x="21" y="43"   width="22" height="3"/>
-    <path d="M29 10 h6 l2.2 15 l4.6 8.5 v12.5 l-4.8 8 h-10 l-4.8 -8 v-12.5 l4.6 -8.5 z"/>
-  </g>
+  <!-- head -->
+  <circle cx="26.5" cy="13.5" r="5.2" fill="#ffffff"/>
 
-  <!-- cockpit and helmet -->
-  <ellipse cx="32" cy="35.5" rx="4.4" ry="6.2" fill="#1d1d1f"/>
-  <circle cx="32" cy="36.5" r="2.5" fill="#f5f5f7"/>
+  <!-- the ball, already on its way -->
+  <circle cx="56" cy="25.5" r="3.1" fill="#d9f23c"/>
 </svg>
