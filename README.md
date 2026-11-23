@@ -10,6 +10,8 @@ pushing to `main` is the whole deploy process.
 index.html    the entire site, styles and script inline
 404.html      not-found page, served by Pages automatically
 favicon.svg   tab icon, a silver Formula car from above
+favicon-*.png, favicon.ico, apple-touch-icon.png   raster icons for search
+              results and older browsers, rendered from favicon.svg
 assets/       portrait, project photo, resume thumbnail, social card
 ```
 
